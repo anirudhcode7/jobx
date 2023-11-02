@@ -65,6 +65,7 @@ import FormAction from "../FormAction";
 import FormExtra from "../FormExtra";
 import Input from "../Input";
 import axios from 'axios';
+import NotificationBanner from "../NotificationBanner";
 
 
 const fields=loginFields;
@@ -73,7 +74,15 @@ fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
     const [loginState,setLoginState]=useState(fieldsState);
-    const [error, setError] = useState(null);
+    const [notification, setNotification] = useState(null);
+
+    const showNotification = (message, type) => {
+      setNotification({ message, type });
+    }
+
+    const closeNotification = () => {
+      setNotification(null);
+    }
 
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
@@ -95,25 +104,31 @@ export default function Login(){
           if (response.status === 200) {
             console.log('Login successful');
             // Optionally, you can handle successful login here.
-            setError('Login successful');
-          } else {
-            console.log('Login failed');
-            if (response.status === 404) {
-              setError('User not found. Please check your username.');
-            } else if (response.status === 401) {
-              setError('Invalid password. Please check your password.');
-            } else {
-              setError('Login failed. Please try again.');
-            }
+            showNotification('Login successful', 'success');
           }
         } catch (error) {
-          console.error('Error during login:', error);
-          setError('Network or server error. Please try again later.');
+          console.log('Login failed');
+          if (error.response.status === 404) {
+            showNotification('User not found. Please check your username.', 'error');
+          } else if (error.response.status === 401) {
+            showNotification('Invalid password. Please check your password.', 'error');
+          } else {
+            showNotification('Network or server error. Please try again later.', 'error');
+          }
         }
         return;
     };
 
     return(
+        <div>
+       {notification && (
+           <NotificationBanner
+             message={notification.message}
+             type={notification.type}
+             onClose={closeNotification}
+           />
+         )}
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="-space-y-px">
             {
@@ -139,5 +154,6 @@ export default function Login(){
         <FormAction handleSubmit={handleSubmit} text="Login"/>
 
       </form>
+      </div>
     )
 }
