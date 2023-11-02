@@ -24,6 +24,7 @@ register = async (req, res) => {
 
       // Save the user document to the database
       await newUser.save();
+      console.log("New User Saved")
 
       res.status(201).json({ message: 'Registration successful.' });
     } catch (error) {
@@ -56,7 +57,7 @@ login = async (req, res) => {
       if (user.authenticate(password)) {
         // Password is correct, generate a JWT token
         const token = jwt.sign({ id: user._id }, 'your-secret-key', { expiresIn: '1h' });
-
+        console.log("Authenticated new user")
         // Send the token in the response
         res.json({ token });
       } else {

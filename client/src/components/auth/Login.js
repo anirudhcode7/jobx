@@ -64,6 +64,8 @@ import { loginFields } from "../../constants/formFields";
 import FormAction from "../FormAction";
 import FormExtra from "../FormExtra";
 import Input from "../Input";
+import axios from 'axios';
+
 
 const fields=loginFields;
 let fieldsState = {};
@@ -71,6 +73,7 @@ fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
     const [loginState,setLoginState]=useState(fieldsState);
+    const [error, setError] = useState(null);
 
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
@@ -82,9 +85,33 @@ export default function Login(){
     }
 
         //Handle Login API Integration here
-    const authenticateUser = () =>{
+    const authenticateUser = async () =>{
+        console.log("Login State: ", loginState);
+        try {
+          const data = loginState;
+          console.log("data:", data);
+          const response = await axios.post('http://localhost:3004/api/auth/login', data);
 
-    }
+          if (response.status === 200) {
+            console.log('Login successful');
+            // Optionally, you can handle successful login here.
+            setError('Login successful');
+          } else {
+            console.log('Login failed');
+            if (response.status === 404) {
+              setError('User not found. Please check your username.');
+            } else if (response.status === 401) {
+              setError('Invalid password. Please check your password.');
+            } else {
+              setError('Login failed. Please try again.');
+            }
+          }
+        } catch (error) {
+          console.error('Error during login:', error);
+          setError('Network or server error. Please try again later.');
+        }
+        return;
+    };
 
     return(
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
