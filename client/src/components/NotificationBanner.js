@@ -36,7 +36,7 @@ const NotificationBanner = ({ message, type, onClose }) => {
 
   return visible ? (
     <div
-      className={`fixed top-0 left-0 right-0 p-4 ${getBackgroundColor()} ${getTextColor()} rounded-b-lg shadow-lg`}
+      className={`absolute top-16 left-1/2 transform -translate-x-1/2 p-4 ${getBackgroundColor()} ${getTextColor()} rounded-lg shadow-lg`}
     >
       <div className="container mx-auto text-center">
         <p>{message}</p>

@@ -16,6 +16,7 @@ register = async (req, res) => {
       // Check if the username already exists in the database
       const existingUser = await User.findOne({ username });
       if (existingUser) {
+        console.log("Username already exists!!!");
         return res.status(400).json({ message: 'Username is already in use.' });
       }
 
