@@ -5,8 +5,11 @@ export default function SignupPage(){
     return(
         <>
              <Header
-                heading="Sign Up Your Account"
-                />
+               heading="Signup to create an account"
+               paragraph="Already have an account? "
+               linkName="Login"
+               linkUrl="/"
+             />
             <Signup/>
         </>
     )

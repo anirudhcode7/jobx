@@ -59,7 +59,6 @@
 import { useState } from 'react';
 import { signupFields } from "../../constants/formFields";
 import FormAction from "../FormAction";
-import FormExtra from "../FormExtra";
 import Input from "../Input";
 
 const fields=signupFields;
@@ -84,8 +83,8 @@ export default function Signup(){
     }
 
     return(
-        <form className="mt-8 space-y-6">
-        <div className="-space-y-px">
+        <form className="mt-8 space-y-6" handleSubmit={handleSubmit}>
+        <div className="">
             {
                 fields.map(field=>
                         <Input
