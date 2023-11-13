@@ -32,7 +32,7 @@ export default function Login(){
         setLoginState({...loginState,[e.target.id]:e.target.value})
     }
 
-    const handleSubmit=(e)=>{
+    const handleClick=(e)=>{
         e.preventDefault();
         authenticateUser();
     }
@@ -66,16 +66,15 @@ export default function Login(){
     };
 
     return(
-        <div>
-       {notification && (
+    <div>
+        {notification && (
            <NotificationBanner
              message={notification.message}
              type={notification.type}
              onClose={closeNotification}
            />
-         )}
+        )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="-space-y-px">
             {
                 fields.map(field=>
@@ -95,11 +94,10 @@ export default function Login(){
                 )
             }
         </div>
-
+        <br></br>
         <FormExtra/>
-        <FormAction handleSubmit={handleSubmit} text="Login"/>
+        <FormAction handleClick={handleClick} text="Login"/>
 
-      </form>
-      </div>
+    </div>
     )
 }

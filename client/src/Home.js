@@ -22,7 +22,7 @@ const Home = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
     getQuestions();
     console.log('Interview Started');
@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <div>
       <h1>Welcome to JobX</h1>
-      <FormAction handleSubmit={handleSubmit} text="Practice Interview" />
+      <FormAction handleClick={handleClick} text="Practice Interview" />
     </div>
   );
 };

@@ -26,7 +26,7 @@ export default function Signup() {
     setNotification(null);
   }
 
-  const handleSubmit = async (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
     saveUserToDB();
   }
@@ -52,7 +52,7 @@ export default function Signup() {
         console.log("Username is already in use.")
         showNotification('Username is already in use.', 'error');
       }
-      else if (error.response.status == 500) {
+      else if (error.response.status === 500) {
         console.error('Error during registration:', error);
         showNotification('Network or server error. Please try again later.', 'error');
       }
@@ -73,7 +73,6 @@ export default function Signup() {
         />
       )}
 
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="">
           {
             fields.map(field =>
@@ -93,8 +92,7 @@ export default function Signup() {
           }
         </div>
 
-        <FormAction handleSubmit={handleSubmit} text="Sign Up" />
-      </form>
+        <FormAction handleClick={handleClick} text="Sign Up" />
     </div>
   )
 }
