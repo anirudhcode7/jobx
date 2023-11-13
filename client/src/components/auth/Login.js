@@ -66,6 +66,7 @@ import FormExtra from "../FormExtra";
 import Input from "../Input";
 import axios from 'axios';
 import NotificationBanner from "../NotificationBanner";
+import { useNavigate } from 'react-router-dom';
 
 
 const fields=loginFields;
@@ -75,6 +76,8 @@ fields.forEach(field=>fieldsState[field.id]='');
 export default function Login(){
     const [loginState,setLoginState]=useState(fieldsState);
     const [notification, setNotification] = useState(null);
+    const navigate = useNavigate();
+
 
     const showNotification = (message, type) => {
       setNotification({ message, type });
@@ -105,6 +108,7 @@ export default function Login(){
             console.log('Login successful');
             // Optionally, you can handle successful login here.
             showNotification('Login successful', 'success');
+            navigate('/home');
           }
         } catch (error) {
           console.log('Login failed');
