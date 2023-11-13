@@ -6,6 +6,7 @@ const cors = require('cors');
 const db = require('./config/db'); // Import the database connection
 
 const authRoutes = require('./routes/auth'); // Import your authentication routes
+const interviewRoutes = require('./routes/interview')
 
 
 // Create an instance of the Express application
@@ -15,8 +16,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+
 // Use your authentication routes
 app.use('/api/auth', authRoutes);
+
+// Use interview routes
+app.use('/api/interview', interviewRoutes);
 
 // Define and use other routes here
 
