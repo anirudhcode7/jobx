@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 
 import SignupPage from './views/Signup';
 import LoginPage from './views/Login';
+import InterviewPage from './views/Interview';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<Demo />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/interview" element={<InterviewPage />} />
           </Routes>
         </BrowserRouter>
       </div>

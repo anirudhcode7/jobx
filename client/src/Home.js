@@ -1,39 +1,21 @@
 import FormAction from './components/FormAction'
-import { useAuth } from './context/AuthContext';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const { authToken } = useAuth();
+    const navigate = useNavigate();
 
-  const getQuestions = async () => {
-    try {
-      console.log("Token: ",authToken);
-      const response = await axios.get('http://localhost:3004/api/interview/questions', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+    const handleClick = (e) => {
+        e.preventDefault();
+        console.log('Interview Started');
+        navigate('/interview');
+    };
 
-      // Handle the response data
-      console.log('Questions:', response.data);
-    } catch (error) {
-      // Handle errors
-      console.error('Error fetching questions:', error);
-    }
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    getQuestions();
-    console.log('Interview Started');
-  };
-
-  return (
+    return (
     <div>
       <h1>Welcome to JobX</h1>
       <FormAction handleClick={handleClick} text="Practice Interview" />
     </div>
-  );
+    );
 };
 
 export default Home;
