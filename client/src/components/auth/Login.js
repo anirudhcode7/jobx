@@ -6,6 +6,7 @@ import Input from "../Input";
 import axios from 'axios';
 import NotificationBanner from "../NotificationBanner";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 
 const fields=loginFields;
@@ -13,6 +14,7 @@ let fieldsState = {};
 fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
+    const { setToken } = useAuth();
     const [loginState,setLoginState]=useState(fieldsState);
     const [notification, setNotification] = useState(null);
     const navigate = useNavigate();
@@ -44,6 +46,7 @@ export default function Login(){
           const response = await axios.post('http://localhost:3004/api/auth/login', data);
 
           if (response.status === 200) {
+            setToken(response.data.token);
             console.log('Login successful');
             // Optionally, you can handle successful login here.
             showNotification('Login successful', 'success');
