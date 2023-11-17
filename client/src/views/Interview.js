@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import Typed from 'react-typed'; // Import Typed for typing animation
 
 const InterviewPage = () => {
   var { authToken, setToken } = useAuth();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState(Array(questions.length).fill(''));
+  const [userAnswers, setUserAnswers] = useState([]);
 
   useEffect(() => {
       // If there is no authToken in the context, retrieve it from localStorage
       if (!authToken) {
         const storedAuthToken = localStorage.getItem('authToken');
-        console.log("Stored Auth Token:", storedAuthToken);
         if (storedAuthToken) {
           setToken(storedAuthToken);
           authToken = storedAuthToken;
         } else {
-          // If there is still no authToken, the user needs to log in
-          // Redirect to the login page or handle as needed
+          // Redirect to login if no authToken found
           window.location.href = '/';
         }
       }
@@ -34,14 +33,10 @@ const InterviewPage = () => {
           setUserAnswers(Array(response.data.Questions.length).fill(''));
         })
         .catch(error => {
+          // Handle errors, such as redirecting on authorization failure
           console.error('Error fetching questions:', error);
-          if (error.response && error.response.status === 401) {
-            // Unauthorized (probably due to expired token)
-            // Redirect to the login page or handle as needed
-            window.location.href = '/';
-          }
         });
-    }, [authToken, setToken]);
+  }, [authToken, setToken]);
 
   const handleAnswerChange = (event) => {
     const updatedUserAnswers = [...userAnswers];
@@ -56,44 +51,56 @@ const InterviewPage = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Submit button clicked');
-    // Add logic to handle the submitted answers
+    // Logic to handle the submission of answers
+    // This would typically involve sending the data to a backend endpoint
+    console.log("Submit button clicked");
+//    axios.post('http://localhost:3004/api/interview/submit', {
+//      answers: userAnswers,
+//    }, {
+//      headers: {
+//        Authorization: `Bearer ${authToken}`,
+//      },
+//    })
+//      .then(response => {
+//        // Handle the successful submission
+//        console.log('Answers submitted:', response);
+//      })
+//      .catch(error => {
+//        // Handle errors during submission
+//        console.error('Error submitting answers:', error);
+//      });
   };
+
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+  const buttonText = isLastQuestion ? 'Submit' : 'Next';
+  const buttonColor = isLastQuestion ? 'bg-green-500 hover:bg-green-600' : 'bg-purple-600 hover:bg-purple-700';
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-md shadow-md max-w-md w-full flex-1 flex flex-col">
-        <div className="flex-1 overflow-hidden">
-          <h1 className="text-2xl font-bold mb-4">Interview Page</h1>
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
-            <p className="text-3xl mb-4">
-              {questions[currentQuestionIndex]}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-end justify-between">
-          <textarea
-            className="mt-2 p-2 border border-gray-300 rounded-md w-full"
-            value={userAnswers[currentQuestionIndex]}
-            onChange={handleAnswerChange}
+        <h1 className="text-2xl font-bold mb-4">Interview Page</h1>
+        <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
+        <div className="mb-6 bg-gray-200 p-4 rounded-lg">
+        {questions.length > 0 && questions[currentQuestionIndex] &&
+          <Typed
+            key={currentQuestionIndex}
+            startDelay={500}
+            strings={[questions[currentQuestionIndex]]}
+            typeSpeed={40}
           />
-          {currentQuestionIndex < questions.length - 1 ? (
-                <button
-                  className="w-full py-2 px-4 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:ring-purple-500"
-                  onClick={handleNextQuestion}
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-400"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              )}
+        }
         </div>
+        <textarea
+          className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+          value={userAnswers[currentQuestionIndex]}
+          onChange={handleAnswerChange}
+        />
+        <button
+          className={`w-full my-4 py-2 px-4 text-white font-semibold rounded-md focus:outline-none focus:ring ${buttonColor}`}
+          onClick={isLastQuestion ? handleSubmit : handleNextQuestion}
+        >
+          {buttonText}
+        </button>
       </div>
     </div>
   );

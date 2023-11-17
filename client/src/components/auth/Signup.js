@@ -4,6 +4,7 @@ import FormAction from "../FormAction";
 import Input from "../Input";
 import NotificationBanner from "../NotificationBanner"; // Import the NotificationBanner component
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const fields = signupFields;
 let fieldsState = {};
@@ -11,6 +12,7 @@ fields.forEach(field => (fieldsState[field.id] = ''));
 
 export default function Signup() {
   const [signUpState, setSignUpState] = useState(fieldsState);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setSignUpState({ ...signUpState, [e.target.id]: e.target.value });
@@ -45,6 +47,7 @@ export default function Signup() {
       if (response.status === 201) {
         console.log('Registration successful');
         showNotification('Registration successful', 'success');
+        navigate('/');
       }
     } catch (error) {
       console.log('Registration failed');
