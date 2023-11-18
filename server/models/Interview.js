@@ -7,10 +7,15 @@ const interviewSchema = new Schema({
     ref: 'User',
     required: true,
   },
-  interview: [
+  interviews: [
     {
-      question: { type: String, required: true },
-      answer: { type: String, required: true }
+      interview: [
+        {
+          question: { type: String, required: true },
+          answer: { type: String, required: true }
+        }
+      ],
+      attempt_number: { type: Number, required: true }
     }
   ]
 });

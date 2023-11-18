@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Typed from 'react-typed'; // Import Typed for typing animation
+import { useNavigate } from 'react-router-dom';
+
 
 const InterviewPage = () => {
   var { authToken, setToken } = useAuth();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
       // If there is no authToken in the context, retrieve it from localStorage
@@ -38,44 +41,45 @@ const InterviewPage = () => {
         });
   }, [authToken, setToken]);
 
-  const handleAnswerChange = (event) => {
+    const handleAnswerChange = (event) => {
     const updatedUserAnswers = [...userAnswers];
     updatedUserAnswers[currentQuestionIndex] = event.target.value;
     setUserAnswers(updatedUserAnswers);
-  };
+    };
 
-  const handleNextQuestion = () => {
+    const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  };
+    };
 
-const handleSubmit = () => {
-    console.log("Submit button clicked");
+    const handleSubmit = () => {
+        console.log("Submit button clicked");
 
-    // Construct the interview data
-    const interviewData = questions.map((question, index) => ({
-        question,
-        answer: userAnswers[index]
-    }));
+        // Construct the interview data
+        const interviewData = questions.map((question, index) => ({
+            question,
+            answer: userAnswers[index]
+        }));
 
-    // Send a POST request to the backend to store the interview data
-    axios.post('http://localhost:3004/api/interview/responses', {
-        interview: interviewData
-    }, {
-        headers: {
-            Authorization: `Bearer ${authToken}`,
-        },
-    })
-    .then(response => {
-        console.log('Interview data submitted successfully:', response);
-        // Redirect or display a success message
-    })
-    .catch(error => {
-        console.error('Error submitting interview data:', error);
-        // Handle the error, such as displaying an error message
-    });
-};
+        // Send a POST request to the backend to store the interview data
+        axios.post('http://localhost:3004/api/interview/responses', {
+            interview: interviewData
+        }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        })
+        .then(response => {
+            console.log('Interview data submitted successfully:', response);
+            // Redirect or display a success message
+            navigate('/thank-you');
+        })
+        .catch(error => {
+            console.error('Error submitting interview data:', error);
+            // Handle the error, such as displaying an error message
+        });
+    };
 
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const buttonText = isLastQuestion ? 'Submit' : 'Next';

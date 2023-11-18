@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Interview = require('../models/Interview'); // Import the Interview model
+const MAX_ATTEMPTS = process.env.MAX_ATTEMPTS || 5; // Default to 5 if not specified in .env
 
 const Questions = [
     "What are you looking for in your next job?",
@@ -15,26 +16,34 @@ const getQuestions = async (req, res) => {
 // Function to store interview data
 const postInterview = async (req, res) => {
     try {
-        // Retrieve interview data from the request body
+        const userId = req.user.id;
         const { interview } = req.body;
 
-        // Retrieve user ID from the decoded JWT token in req.user
-        const userId = req.user.id;
+        // Find existing interview data for the user
+        let userInterview = await Interview.findOne({ user_id: userId });
 
-        // Check if the interview data is provided
-        if (!interview) {
-            return res.status(400).json({ message: 'Interview data is required.' });
+        // Check if the user has reached the maximum number of attempts
+        if (userInterview && userInterview.interviews.length >= MAX_ATTEMPTS) {
+            return res.status(403).json({ message: 'Maximum number of attempts reached.' });
         }
 
-        // Create a new interview document
-        const newInterview = new Interview({
-            user_id: userId,
-            interview: interview
-        });
+        // Create a new interview attempt
+        const newAttempt = {
+            interview,
+            attempt_number: userInterview ? userInterview.interviews.length + 1 : 1
+        };
 
-        // Save the interview document to the database
-        await newInterview.save();
-        console.log("Interview data stored successfully.");
+        // If no existing interview data, create new record
+        if (!userInterview) {
+            userInterview = new Interview({ user_id: userId, interviews: [newAttempt] });
+        } else {
+            // Add new attempt to existing interview data
+            userInterview.interviews.push(newAttempt);
+        }
+
+        // Save the interview data
+        await userInterview.save();
+        console.log("Interview data stored successfully for Interview number: ",newAttempt.attempt_number);
         res.status(201).json({ message: 'Interview data stored successfully.' });
     } catch (error) {
         console.error(error);
@@ -42,9 +51,28 @@ const postInterview = async (req, res) => {
     }
 };
 
+const getCurrentCountOfInterviews = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // Find existing interview data for the user
+        let userInterview = await Interview.findOne({ user_id: userId });
+
+        if (userInterview){
+            return res.status(200).json({count: userInterview.interviews.length});
+        }
+        return res.status(200).json({count: 0});
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to get the count data. Please try again' });
+    }
+}
+
 const InterviewController = {
     getQuestions,
-    postInterview
+    postInterview,
+    getCurrentCountOfInterviews
 }
 
 module.exports = InterviewController;
