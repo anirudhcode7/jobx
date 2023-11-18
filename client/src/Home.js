@@ -4,10 +4,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext'; // Import your AuthContext
 
+
+const MAX_ATTEMPTS = process.env.REACT_APP_MAX_ATTEMPTS || 5;
+
 const Home = () => {
     const navigate = useNavigate();
     const { authToken } = useAuth(); // Get the authToken from your AuthContext
-    const MAX_ATTEMPTS = 5; // Replace with the actual max attempts value or fetch from env/config
     const [remainingAttempts, setRemainingAttempts] = useState(MAX_ATTEMPTS);
 
     useEffect(() => {
