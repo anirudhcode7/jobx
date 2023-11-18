@@ -50,26 +50,32 @@ const InterviewPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Logic to handle the submission of answers
-    // This would typically involve sending the data to a backend endpoint
+const handleSubmit = () => {
     console.log("Submit button clicked");
-//    axios.post('http://localhost:3004/api/interview/submit', {
-//      answers: userAnswers,
-//    }, {
-//      headers: {
-//        Authorization: `Bearer ${authToken}`,
-//      },
-//    })
-//      .then(response => {
-//        // Handle the successful submission
-//        console.log('Answers submitted:', response);
-//      })
-//      .catch(error => {
-//        // Handle errors during submission
-//        console.error('Error submitting answers:', error);
-//      });
-  };
+
+    // Construct the interview data
+    const interviewData = questions.map((question, index) => ({
+        question,
+        answer: userAnswers[index]
+    }));
+
+    // Send a POST request to the backend to store the interview data
+    axios.post('http://localhost:3004/api/interview/responses', {
+        interview: interviewData
+    }, {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+        },
+    })
+    .then(response => {
+        console.log('Interview data submitted successfully:', response);
+        // Redirect or display a success message
+    })
+    .catch(error => {
+        console.error('Error submitting interview data:', error);
+        // Handle the error, such as displaying an error message
+    });
+};
 
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const buttonText = isLastQuestion ? 'Submit' : 'Next';
