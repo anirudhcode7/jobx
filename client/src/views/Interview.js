@@ -18,10 +18,10 @@ const InterviewPage = () => {
         const storedAuthToken = localStorage.getItem('authToken');
         if (storedAuthToken) {
           setToken(storedAuthToken);
-          authToken = storedAuthToken;
         } else {
           // Redirect to login if no authToken found
-          window.location.href = '/';
+            navigate('/');
+            return;
         }
       }
 
@@ -39,7 +39,7 @@ const InterviewPage = () => {
           // Handle errors, such as redirecting on authorization failure
           console.error('Error fetching questions:', error);
         });
-  }, [authToken, setToken]);
+  }, [authToken, setToken, navigate]);
 
     const handleAnswerChange = (event) => {
     const updatedUserAnswers = [...userAnswers];
