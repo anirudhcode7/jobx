@@ -1,19 +1,24 @@
 {
   "name": "jobx",
   "version": "1.0.0",
-  "description": "A platform for job-seekers to practice interviews and get evaluated.",
+  "description": "A platform for job-seekers to get interviewed and evaluated",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anirudhcode7/jobx.git"
-  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/anirudhcode7/jobx/issues"
-  },
-  "homepage": "https://github.com/anirudhcode7/jobx#readme"
+  "dependencies": {
+    "axios": "^1.5.1",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.3",
+    "punycode": "^2.3.1",
+    "react-router-dom": "^6.17.0"
+  }
 }
