@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import Typed from 'react-typed'; // Import Typed for typing animation
+import { TypeAnimation } from 'react-type-animation';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -48,9 +48,10 @@ const InterviewPage = () => {
     };
 
     const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
+      console.log("Next button clicked: ", currentQuestionIndex)
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      }
     };
 
     const handleSubmit = () => {
@@ -92,12 +93,14 @@ const InterviewPage = () => {
         <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
         <div className="mb-6 bg-gray-200 p-4 rounded-lg">
         {questions.length > 0 && questions[currentQuestionIndex] &&
-          <Typed
+          <TypeAnimation
             key={currentQuestionIndex}
-            startDelay={500}
-            strings={[questions[currentQuestionIndex]]}
-            typeSpeed={40}
-          />
+            sequence={[questions[currentQuestionIndex]]}
+            wrapper="span"
+            speed={50}
+            style={{ fontSize: '2em', display: 'inline-block' }}
+            repeat={0}
+        />
         }
         </div>
         <textarea
