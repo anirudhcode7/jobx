@@ -15,7 +15,7 @@ router.get('/count', authMiddleware, InterviewController.getCurrentCountOfInterv
 router.post('/responses', authMiddleware, InterviewController.postInterview);
 
 // POST route for evaluating an interview
-router.post('/evaluate', authMiddleware, InterviewController.evaluateInterview);
+router.get('/evaluate', authMiddleware, InterviewController.evaluateInterview);
 
 
 module.exports = router;

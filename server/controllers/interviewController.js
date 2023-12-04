@@ -128,17 +128,20 @@ const evaluateInterview = async (req, res) => {
       });
     });
 
-//    const response = await openai.chat.completions.create({
-//      model: "gpt-3.5-turbo",
-//      messages: messages,
-//      temperature: 0,
-//      max_tokens: 256,
-//      top_p: 1,
-//      frequency_penalty: 0,
-//      presence_penalty: 0,
-//    });
+   const response = await openai.chat.completions.create({
+     model: "gpt-3.5-turbo-1106",
+     messages: messages,
+     response_format: { type: "json_object" },
+     temperature: 0,
+     max_tokens: 256,
+     top_p: 1,
+     frequency_penalty: 0,
+     presence_penalty: 0,
+   });
 
-    res.status(200).json(response.data);
+    console.log("Response Choice[0].message.content: ", response.choices[0].message.content)
+    console.log("Response Choice[0].message.content: ", response.choices[0].message.content)
+    res.status(200).json(response.choices[0].message.content);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error evaluating interview' });

@@ -74,7 +74,17 @@ const InterviewPage = () => {
         .then(response => {
             console.log('Interview data submitted successfully:', response);
             // Redirect or display a success message
-            navigate('/thank-you');
+            // Call evaluate API with chatGPT
+            axios.get('http://localhost:3004/api/interview/evaluate', {
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                },
+            })
+            .then(response => {
+              console.log("Evaluation from Chat-GPT: ", response)
+              navigate('/thank-you');
+            })
+
         })
         .catch(error => {
             console.error('Error submitting interview data:', error);
