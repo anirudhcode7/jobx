@@ -30,6 +30,10 @@ export default function Signup() {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    if (signUpState.password !== signUpState.confirmPassword) {
+      showNotification('Passwords do not match', 'error');
+      return;
+    }
     saveUserToDB();
   }
 
