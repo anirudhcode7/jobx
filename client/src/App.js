@@ -6,7 +6,7 @@ import Home from './Home';
 import { AuthProvider } from './context/AuthContext';
 
 import SignupPage from './views/Signup';
-import LoginPage from './views/Login';
+import Login from './views/Login';
 import InterviewPage from './views/Interview';
 import ThankYouPage from './views/ThankYouPage';
 
@@ -17,7 +17,7 @@ function App() {
       <div className="max-w-md w-full space-y-8">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<Demo />} />
             <Route path="/home" element={<Home />} />
