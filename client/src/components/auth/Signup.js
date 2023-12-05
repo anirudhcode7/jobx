@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { signupFields } from "../../constants/formFields";
 import FormAction from "../FormAction";
 import Input from "../Input";
-import NotificationBanner from "../NotificationBanner"; // Import the NotificationBanner component
+import NotificationBanner from "../NotificationBanner"; 
+import useNotification from '../../services/useNotification';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,18 +15,10 @@ export default function Signup() {
   const [signUpState, setSignUpState] = useState(fieldsState);
   const navigate = useNavigate();
 
+  const { notification, showNotification, closeNotification } = useNotification();
+
   const handleChange = (e) => {
     setSignUpState({ ...signUpState, [e.target.id]: e.target.value });
-  }
-
-  const [notification, setNotification] = useState(null);
-
-  const showNotification = (message, type) => {
-    setNotification({ message, type });
-  }
-
-  const closeNotification = () => {
-    setNotification(null);
   }
 
   const handleClick = async (e) => {
