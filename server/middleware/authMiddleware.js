@@ -24,9 +24,7 @@ const authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, secretKey); // Replace 'your-secret-key' with your actual secret key
 
     // Attach the user object to the request for further use if needed
-    console.log("decoded: ", decoded)
     req.user = decoded;
-    console.log("req.user: ", req.user)
 
     // Continue to the next middleware or route handler
     next();
