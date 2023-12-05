@@ -4,8 +4,9 @@ import FormAction from "../FormAction";
 import Input from "../Input";
 import NotificationBanner from "../NotificationBanner"; 
 import useNotification from '../../services/useNotification';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {saveUserToDB} from '../../api/authApi';
+
 
 const fields = signupFields;
 let fieldsState = {};
@@ -23,41 +24,8 @@ export default function Signup() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    saveUserToDB();
+    saveUserToDB(signUpState, showNotification, ()=>navigate('/'));
   }
-
-  const saveUserToDB = async () => {
-    try {
-      var data = {
-        username: signUpState["username"],
-        password: signUpState["password"],
-      }
-
-      const response = await axios.post('http://localhost:3004/api/auth/register', data);
-      console.log("Status:",response.status);
-      console.log("Response:",response.data);
-
-      if (response.status === 201) {
-        console.log('Registration successful');
-        showNotification('Registration successful', 'success');
-        navigate('/');
-      }
-    } catch (error) {
-      console.log('Registration failed');
-      if (error.response.status === 400) {
-        console.log("Username is already in use.")
-        showNotification('Username is already in use.', 'error');
-      }
-      else if (error.response.status === 500) {
-        console.error('Error during registration:', error);
-        showNotification('Network or server error. Please try again later.', 'error');
-      }
-      else {
-        console.log("Failed")
-        showNotification('Registration failed. Please try again.', 'error');
-      }
-    }
-  };
 
   return (
     <div>

@@ -38,7 +38,7 @@ export const saveUserToDB = async (signUpState, showNotification, onSuccess) => 
         password: signUpState["password"],
       }
 
-      const response = await axios.post('http://localhost:3004/api/auth/register', data);
+      const response = await axios.post(`${API_URL}/register`, data);
       console.log("Status:",response.status);
       console.log("Response:",response.data);
 
