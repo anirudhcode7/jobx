@@ -27,7 +27,7 @@ export default function Login(){
 
     const handleClick=(e)=>{
         e.preventDefault();
-        authenticateUser(loginState, showNotification, setToken, ()=>navigate('thank-you'));
+        authenticateUser(loginState, showNotification, setToken, ()=>navigate('/home'));
     }
 
     return(
