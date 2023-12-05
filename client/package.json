@@ -5,6 +5,11 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-login-page/page10": "^1.0.1",
     "@react-login-page/page4": "^1.0.1",
     "@testing-library/jest-dom": "^5.17.0",

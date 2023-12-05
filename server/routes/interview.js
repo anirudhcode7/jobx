@@ -14,6 +14,10 @@ router.get('/count', authMiddleware, InterviewController.getCurrentCountOfInterv
 // The authMiddleware ensures that only authenticated users can post an interview
 router.post('/responses', authMiddleware, InterviewController.postInterview);
 
+if (process.env.ENABLE_AI_EVALUATION === 'true'){
+    // POST route for evaluating an interview
+    router.get('/evaluate', authMiddleware, InterviewController.evaluateInterview);
+}
 
 
 module.exports = router;
