@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fetchQuestions, submitInterview, evaluateInterview } from '../api/interviewApi';
+import QuestionDisplay from '../components/interview/QuestionDisplay';
+import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
-import { TypeAnimation } from 'react-type-animation';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -113,42 +112,14 @@ const InterviewPage = () => {
       <div className="bg-white p-8 rounded-md shadow-md max-w-md w-full flex-1 flex flex-col">
         <h1 className="text-2xl font-bold mb-4">Interview Page</h1>
         <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
-        <div className="mb-6 bg-gray-200 p-4 rounded-lg">
-        {questions.length > 0 && questions[currentQuestionIndex] &&
-          <TypeAnimation
-            key={currentQuestionIndex}
-            sequence={[questions[currentQuestionIndex]]}
-            wrapper="span"
-            speed={50}
-            style={{ fontSize: '2em', display: 'inline-block' }}
-            repeat={0}
+        
+        <QuestionDisplay question={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} />
+        <TextInputWithMic 
+          value={userAnswers[currentQuestionIndex]} 
+          onChange={handleAnswerChange} 
+          isRecording={isRecording} 
+          toggleRecording={toggleRecording} 
         />
-        }
-        </div>
-        <div className="relative mt-2">
-          <textarea
-            className="p-2 pl-3 pr-10 border border-gray-300 rounded-md w-full"
-            value={userAnswers[currentQuestionIndex]}
-            onChange={handleAnswerChange}
-          />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-            {isRecording ? (
-              <FontAwesomeIcon 
-                icon={faMicrophone} 
-                onClick={toggleRecording} 
-                className="text-green-500 cursor-pointer"
-                size="2x"
-              />
-            ) : (
-              <FontAwesomeIcon 
-                icon={faMicrophone} 
-                onClick={toggleRecording}
-                className="text-gray-500 cursor-pointer"
-                size="2x"
-              />
-            )}
-          </div>
-        </div>
 
         <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
         <button
