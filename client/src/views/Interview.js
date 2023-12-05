@@ -99,7 +99,6 @@ const InterviewPage = () => {
               console.error("Error during evaluation:", error);
               // Handle other types of errors
           }
-          navigate('/thank-you');
         });
     };
 
