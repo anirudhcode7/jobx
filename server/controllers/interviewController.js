@@ -4,20 +4,35 @@ const MAX_ATTEMPTS = process.env.MAX_ATTEMPTS || 5; // Default to 5 if not speci
 const OpenAI = require('openai');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const Question = require('../models/Question');
 
 // Setup OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
 });
 
-const Questions = [
-    "What are you looking for in your next job?",
-     "What are your career goals for the next five years?",
-     "Describe a problem that you have solved using data. What did you enjoy about the process?"
-]
+// Only for local mongo DB connection for testing
+// const Questions = [
+//     "What are you looking for in your next job?",
+//      "What are your career goals for the next five years?",
+//      "Describe a problem that you have solved using data. What did you enjoy about the process?"
+// ]
 
 const getQuestions = async (req, res) => {
-    res.json({ Questions });
+    // res.json({ Questions }); // Use only for local mongo db connection
+    try {
+      // Fetch random questions, e.g., 3 questions
+      const numberOfQuestions = parseInt(process.env.NUMBER_OF_QUESTIONS_IN_INTERVIEW) || 3;
+      const randomQuestions = await Question.aggregate([
+        { $sample: { size: numberOfQuestions } }
+      ]);
+  
+      res.json({ Questions: randomQuestions.map(q => q.question) });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching questions' });
+    }
+
 }
 
 
