@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchQuestions, submitInterview, evaluateInterview } from '../api/interviewApi';
 import SpeechToText from '../components/SpeechToText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
@@ -42,11 +42,7 @@ const InterviewPage = () => {
       }
 
       // Fetch questions from the backend when the component mounts
-      axios.get('http://localhost:3004/api/interview/questions', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      fetchQuestions(authToken)
         .then(response => {
           setQuestions(response.data.Questions);
           setUserAnswers(Array(response.data.Questions.length).fill(''));
@@ -80,41 +76,31 @@ const InterviewPage = () => {
         }));
 
         // Send a POST request to the backend to store the interview data
-        axios.post('http://localhost:3004/api/interview/responses', {
-            interview: interviewData
-        }, {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-            },
-        })
+        submitInterview(authToken, interviewData)
         .then(response => {
             console.log('Interview data submitted successfully:', response);
-            // Redirect or display a success message
-            // Call evaluate API with chatGPT
-            axios.get('http://localhost:3004/api/interview/evaluate', {
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-            })
-            .then(response => {
-              console.log("Evaluation from Chat-GPT: ", response)
-              navigate('/thank-you');
-            })
-            .catch(error => {
-              if (error.response && error.response.status === 404) {
-                  console.log("Evaluation feature is currently disabled.");
-                  // Optionally redirect or display a message to the user
-                  // TODO: Display a notification bar
-              } else {
-                  console.error("Error during evaluation:", error);
-                  // Handle other types of errors
-              }
-              navigate('/thank-you');
-            });
+            navigate('/thank-you')
         })
         .catch(error => {
             console.error('Error submitting interview data:', error);
             // Handle the error, such as displaying an error message
+        });
+
+        // Call evaluate API with chatGPT
+        evaluateInterview(authToken)
+        .then(response => {
+          console.log("Evaluation from Chat-GPT: ", response)
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+              console.log("Evaluation feature is currently disabled.");
+              // Optionally redirect or display a message to the user
+              // TODO: Display a notification bar
+          } else {
+              console.error("Error during evaluation:", error);
+              // Handle other types of errors
+          }
+          navigate('/thank-you');
         });
     };
 
