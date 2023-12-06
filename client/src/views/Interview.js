@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchQuestions, submitInterview, evaluateInterview } from '../api/interviewApi';
+import QuestionDisplay from '../components/interview/QuestionDisplay';
+import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
-import { TypeAnimation } from 'react-type-animation';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -42,11 +41,7 @@ const InterviewPage = () => {
       }
 
       // Fetch questions from the backend when the component mounts
-      axios.get('http://localhost:3004/api/interview/questions', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      fetchQuestions(authToken)
         .then(response => {
           setQuestions(response.data.Questions);
           setUserAnswers(Array(response.data.Questions.length).fill(''));
@@ -80,41 +75,30 @@ const InterviewPage = () => {
         }));
 
         // Send a POST request to the backend to store the interview data
-        axios.post('http://localhost:3004/api/interview/responses', {
-            interview: interviewData
-        }, {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-            },
-        })
+        submitInterview(authToken, interviewData)
         .then(response => {
             console.log('Interview data submitted successfully:', response);
-            // Redirect or display a success message
-            // Call evaluate API with chatGPT
-            axios.get('http://localhost:3004/api/interview/evaluate', {
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-            })
-            .then(response => {
-              console.log("Evaluation from Chat-GPT: ", response)
-              navigate('/thank-you');
-            })
-            .catch(error => {
-              if (error.response && error.response.status === 404) {
-                  console.log("Evaluation feature is currently disabled.");
-                  // Optionally redirect or display a message to the user
-                  // TODO: Display a notification bar
-              } else {
-                  console.error("Error during evaluation:", error);
-                  // Handle other types of errors
-              }
-              navigate('/thank-you');
-            });
+            navigate('/thank-you')
         })
         .catch(error => {
             console.error('Error submitting interview data:', error);
             // Handle the error, such as displaying an error message
+        });
+
+        // Call evaluate API with chatGPT
+        evaluateInterview(authToken)
+        .then(response => {
+          console.log("Evaluation from Chat-GPT: ", response)
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+              console.log("Evaluation feature is currently disabled.");
+              // Optionally redirect or display a message to the user
+              // TODO: Display a notification bar
+          } else {
+              console.error("Error during evaluation:", error);
+              // Handle other types of errors
+          }
         });
     };
 
@@ -127,42 +111,14 @@ const InterviewPage = () => {
       <div className="bg-white p-8 rounded-md shadow-md max-w-md w-full flex-1 flex flex-col">
         <h1 className="text-2xl font-bold mb-4">Interview Page</h1>
         <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
-        <div className="mb-6 bg-gray-200 p-4 rounded-lg">
-        {questions.length > 0 && questions[currentQuestionIndex] &&
-          <TypeAnimation
-            key={currentQuestionIndex}
-            sequence={[questions[currentQuestionIndex]]}
-            wrapper="span"
-            speed={50}
-            style={{ fontSize: '2em', display: 'inline-block' }}
-            repeat={0}
+        
+        <QuestionDisplay question={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} />
+        <TextInputWithMic 
+          value={userAnswers[currentQuestionIndex]} 
+          onChange={handleAnswerChange} 
+          isRecording={isRecording} 
+          toggleRecording={toggleRecording} 
         />
-        }
-        </div>
-        <div className="relative mt-2">
-          <textarea
-            className="p-2 pl-3 pr-10 border border-gray-300 rounded-md w-full"
-            value={userAnswers[currentQuestionIndex]}
-            onChange={handleAnswerChange}
-          />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-            {isRecording ? (
-              <FontAwesomeIcon 
-                icon={faMicrophone} 
-                onClick={toggleRecording} 
-                className="text-green-500 cursor-pointer"
-                size="2x"
-              />
-            ) : (
-              <FontAwesomeIcon 
-                icon={faMicrophone} 
-                onClick={toggleRecording}
-                className="text-gray-500 cursor-pointer"
-                size="2x"
-              />
-            )}
-          </div>
-        </div>
 
         <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
         <button
