@@ -5,6 +5,8 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-login-page/page10": "^1.0.1",
     "@react-login-page/page4": "^1.0.1",
     "@testing-library/jest-dom": "^5.17.0",
@@ -14,6 +16,7 @@
     "deep-chat-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
     "react-login-page": "^1.0.1",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
