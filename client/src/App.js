@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Demo from './components/auth/ReactLogin';
-import Home from './Home';
+import Home from './views/Home';
 import { AuthProvider } from './context/AuthContext';
 import LandingPage from './views/Landing';
 import SignupPage from './views/Signup';
@@ -18,10 +18,10 @@ function App() {
     <NextUIProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/landing" element={<LandingPage />} />
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<Demo />} />
+            {/* <Route path="/login" element={<Demo />} /> */}
             <Route path="/home" element={<Home />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />

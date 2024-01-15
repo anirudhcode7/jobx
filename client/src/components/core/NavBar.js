@@ -2,8 +2,7 @@ import React from 'react';
 
 import {Navbar, NavbarBrand, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem,  NavbarItem, Link, Button} from "@nextui-org/react";
 import {Dropdown, DropdownMenu,DropdownItem, DropdownTrigger} from "@nextui-org/react"
-
-
+import RightArrow from '../icons/RightArrow';
 export const ChevronDown = ({fill, size, height, width, ...props}) => {
   return (
     <svg
@@ -38,27 +37,27 @@ export default function NavBar() {
       "Features",
       "Job portal",
       "Resources",
-      "Contact Us",
+      "Contact",
       "Log Out",
     ];
 
   return (
-    <Navbar isBordered isBlurred shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className="border-y-stone-100 z-index-2" >
+    <Navbar isBordered isBlurred shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className="border-y-stone-100 z-index-2 " >
         <NavbarContent >
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 className="sm:hidden"
             />
-            <NavbarBrand>
-                <p className="font-bold text-inherit">JOBX</p>
+            <NavbarBrand as={Link} href="/">
+                <p color="foreground" className="font-extrabold text-transparent bg-clip-text bg-gradient-to-t from-blue-500 to-indigo-600">JOBX</p>
             </NavbarBrand>
         </NavbarContent>
        
        
 
-        <NavbarContent className="hidden sm:flex gap-5" justify="center">
-        <NavbarItem isActive >
-            <Link color="foreground" href="#" className="text-sm subpixel-antialiased">
+        <NavbarContent className="hidden sm:flex gap-5" justify="right">
+         <NavbarItem  > {/* /isActive */}
+            <Link color="foreground" href="/home" className="text-sm font-semibold subpixel-antialiased">
             Home 
             </Link>
         </NavbarItem>
@@ -76,11 +75,11 @@ export default function NavBar() {
               </Button>
             </DropdownTrigger>
           </NavbarItem>
-          <DropdownMenu
-            aria-label="ACME features"
-            className="w-[340px]"
+          <DropdownMenu 
+            aria-label="JOBX features"
+            className="w-[340px] text-indigo-600 text-md font-normal"
             itemClasses={{
-              base: "gap-4",
+              base: "gap-5",
             }}
           >
             <DropdownItem
@@ -124,16 +123,16 @@ export default function NavBar() {
         </NavbarItem>
         <NavbarItem>
             <Link color="foreground" href="#" className="text-sm font-semibold subpixel-antialiased">
-            Contact Us
+            Contact
             </Link>
         </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
         <NavbarItem>
           {/* <MainBlueButton hrefLink="/" text="Get started" /> */}
-          <Button color="primary" variant="bordered" className="text-xs font-semibold text-gray-500 px-4 border-slate-200 border"> 
-            Get started
-          </Button> 
+          <Button as={Link} href="/login" color="primary" variant="bordered" size="sm" className="text-xs font-semibold text-gray-600 px-4 border-slate-100 border hover:shadow-xl"> 
+            Get started <RightArrow height={8} width={14} />
+          </Button>
          
         </NavbarItem>
         </NavbarContent>

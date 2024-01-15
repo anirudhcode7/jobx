@@ -5,6 +5,7 @@ import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../components/core/NavBar';
 
 
 const InterviewPage = () => {
@@ -107,28 +108,30 @@ const InterviewPage = () => {
   const buttonColor = isLastQuestion ? 'bg-green-500 hover:bg-green-600' : 'bg-purple-600 hover:bg-purple-700';
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-md shadow-md max-w-md w-full flex-1 flex flex-col">
-        <h1 className="text-2xl font-bold mb-4">Interview Page</h1>
-        <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
-        
-        <QuestionDisplay question={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} />
-        <TextInputWithMic 
-          value={userAnswers[currentQuestionIndex]} 
-          onChange={handleAnswerChange} 
-          isRecording={isRecording} 
-          toggleRecording={toggleRecording} 
-        />
+    <> 
+      <NavBar />
+      <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+        <div className="bg-white p-8 rounded-md shadow-lg border-1 shadow-indigo-50 max-w-2xl w-full flex flex-col">
+          <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
+          
+          <QuestionDisplay question={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} />
+          <TextInputWithMic 
+            value={userAnswers[currentQuestionIndex]} 
+            onChange={handleAnswerChange} 
+            isRecording={isRecording} 
+            toggleRecording={toggleRecording} 
+          />
 
-        <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
-        <button
-          className={`w-full my-4 py-2 px-4 text-white font-semibold rounded-md focus:outline-none focus:ring ${buttonColor}`}
-          onClick={isLastQuestion ? handleSubmit : handleNextQuestion}
-        >
-          {buttonText}
-        </button>
+          <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
+          <button
+            className={`w-full my-4 py-2 px-4 text-white font-semibold rounded-md focus:outline-none focus:ring ${buttonColor}`}
+            onClick={isLastQuestion ? handleSubmit : handleNextQuestion}
+          >
+            {buttonText}
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

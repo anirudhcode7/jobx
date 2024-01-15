@@ -6,7 +6,7 @@ import NotificationBanner from "../NotificationBanner";
 import useNotification from '../../services/useNotification';
 import { useNavigate } from 'react-router-dom';
 import {saveUserToDB} from '../../api/authApi';
-
+import InputField from '../Input';
 
 const fields = signupFields;
 let fieldsState = {};
@@ -37,26 +37,37 @@ export default function Signup() {
         />
       )}
 
-        <div className="">
-          {
-            fields.map(field =>
-              <Input
-                key={field.id}
-                handleChange={handleChange}
-                value={signUpState[field.id]}
-                labelText={field.labelText}
-                labelFor={field.labelFor}
-                id={field.id}
-                name={field.name}
-                type={field.type}
-                isRequired={field.isRequired}
-                placeholder={field.placeholder}
-              />
-            )
-          }
+    <div className="flex flex-col items-center justify-center " style={{height: '85vh'}}>
+    <div className="bg-white p-8 rounded shadow-xl border-gray-100 w-96 mx-2">
+        <h1 className="text-2xl font-bold mb-4 text-gray-600 text-center">Sign Up</h1>
+        <div className="mb-4">
+                {
+                fields.map(field=>
+                        <InputField
+                            key={field.id}
+                            handleChange={handleChange}
+                            value={signUpState[field.id]}
+                            labelText={field.labelText}
+                            labelFor={field.labelFor}
+                            id={field.id}
+                            name={field.name}
+                            type={field.type}
+                            isRequired={field.isRequired}
+                            placeholder={field.placeholder}
+                    />
+
+                )
+            }
         </div>
 
         <FormAction handleClick={handleClick} text="Sign Up" />
+        <p className="mt-4 text-sm text-gray-600 text-center">
+        Already a user? <a href="/login" className="text-indigo-600 font-semibold">Sign In</a>
+        </p>
     </div>
+    </div>
+
+    </div>
+
   )
 }
