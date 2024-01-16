@@ -44,7 +44,7 @@ export default function Login(){
         )}
 
         <div className="flex flex-col items-center justify-center " style={{height: '85vh'}}>
-            <div className="bg-white p-8 rounded shadow-xl border-gray-100 w-96 mx-2">
+            <div className="bg-white p-8 rounded shadow-xl border-1 border-slate-100 w-96 mx-2">
                 <h1 className="text-2xl font-bold mb-4 text-gray-600 text-center">Sign In</h1>
                 <div className="mb-4">
                         {
@@ -69,11 +69,11 @@ export default function Login(){
                 <div className="flex items-center"> 
                     <Checkbox defaultSelected  radius="sm" color='foreground' size="sm"> Remember me</Checkbox>
                 </div>
-                <a href="#" className="text-sm font-normal text-indigo-600">Forgot password?</a>
+                <a href="#" className="text-sm font-normal text-blue-700">Forgot password?</a>
                 </div>
                 <FormAction handleClick={handleClick} text="Login" />
                 <p className="mt-4 text-sm text-gray-600 text-center">
-                Not a user? <a href="signup" className="text-indigo-600 font-semibold">Sign up</a>
+                Not a user? <a href="signup" className="text-blue-700 font-semibold">Sign up</a>
                 </p>
             </div>
         </div>

@@ -38,7 +38,7 @@ export default function Signup() {
       )}
 
     <div className="flex flex-col items-center justify-center " style={{height: '85vh'}}>
-    <div className="bg-white p-8 rounded shadow-xl border-gray-100 w-96 mx-2">
+    <div className="bg-white p-8 rounded shadow-xl border-1 border-slate-100 w-96 mx-2">
         <h1 className="text-2xl font-bold mb-4 text-gray-600 text-center">Sign Up</h1>
         <div className="mb-4">
                 {
@@ -62,7 +62,7 @@ export default function Signup() {
 
         <FormAction handleClick={handleClick} text="Sign Up" />
         <p className="mt-4 text-sm text-gray-600 text-center">
-        Already a user? <a href="/login" className="text-indigo-600 font-semibold">Sign In</a>
+        Already a user? <a href="/login" className="text-blue-700 font-semibold">Sign In</a>
         </p>
     </div>
     </div>

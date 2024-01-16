@@ -6,11 +6,13 @@ import SpeechToText from '../components/SpeechToText';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/core/NavBar';
-
+import {Flex, Metric, Text } from "@tremor/react";
+import {Chip} from "@nextui-org/react";
+import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
 
 const InterviewPage = () => {
   var { authToken, setToken } = useAuth();
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const navigate = useNavigate();
@@ -44,8 +46,11 @@ const InterviewPage = () => {
       // Fetch questions from the backend when the component mounts
       fetchQuestions(authToken)
         .then(response => {
-          setQuestions(response.data.Questions);
-          setUserAnswers(Array(response.data.Questions.length).fill(''));
+          const questionsResponse = response.data.Questions;
+          
+          setQuestions(questionsResponse);
+          setUserAnswers(Array(questionsResponse.length).fill(''));
+          console.log(response.data);
         })
         .catch(error => {
           // Handle errors, such as redirecting on authorization failure
@@ -70,9 +75,9 @@ const InterviewPage = () => {
         console.log("Submit button clicked");
 
         // Construct the interview data
-        const interviewData = questions.map((question, index) => ({
-            question,
-            answer: userAnswers[index]
+        const interviewData = questions.map((questionObj, index) => ({
+          question: questionObj.question,
+          answer: userAnswers[index]
         }));
 
         // Send a POST request to the backend to store the interview data
@@ -102,7 +107,8 @@ const InterviewPage = () => {
           }
         });
     };
-
+  
+  const questionsCount = questions.length;
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const buttonText = isLastQuestion ? 'Submit' : 'Next';
   const buttonColor = isLastQuestion ? 'bg-green-500 hover:bg-green-600' : 'bg-purple-600 hover:bg-purple-700';
@@ -110,11 +116,25 @@ const InterviewPage = () => {
   return (
     <> 
       <NavBar />
-      <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-        <div className="bg-white p-8 rounded-md shadow-lg border-1 shadow-indigo-50 max-w-2xl w-full flex flex-col">
-          <h2 className="text-lg font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
+      <div className="bg-gray-100 flex flex-col items-center justify-center" style={{height: 'calc(100vh - 65px)'}}>
+        <div className="bg-white m-3 p-4 rounded-xl shadow-xl border-1  max-w-4xl w-full flex flex-col">
+          <Flex className="gap-4 p-0 py-1 mb-3 w-full">
+            <div>
+              <Chip variant="shadow"
+                classNames={{
+                base: "border-gray/100 border-1 bg-white shadow-slate-300/30",
+                content: "drop-shadow shadow-black text-gray-500 font-normal",
+                }}
+              > Question <span style={{letterSpacing: '1.4px'}}>{currentQuestionIndex + 1}/{questionsCount}</span></Chip> 
+            </div>
+            <div>
+                <QuestionCategoryModal type={questions[currentQuestionIndex] ? questions[currentQuestionIndex].type : ''} />
+               
+            </div>
+          </Flex>
           
-          <QuestionDisplay question={questions[currentQuestionIndex]} currentQuestionIndex={currentQuestionIndex} />
+          
+          <QuestionDisplay question={questions[currentQuestionIndex] ? questions[currentQuestionIndex].question : ''} currentQuestionIndex={currentQuestionIndex} />
           <TextInputWithMic 
             value={userAnswers[currentQuestionIndex]} 
             onChange={handleAnswerChange} 

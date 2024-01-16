@@ -59,18 +59,18 @@ const Home = () => {
                     <Col numColSpan={2} numColSpanLg={3} className="w-80">
                         <Card className="shadow-2xl border-1 border-slate-100 bg-slate-50">
                             <CardHeader className="px-4 pt-7 items-start font-bold text-xl text-gray-600">
-                                <h4 className="font-bold text-large">Let's Practice Interview</h4>
+                                <h4 className="font-bold text-medium text-slate-600">Let's Practice Interview</h4>
                             </CardHeader>
                             <CardBody>
                                 <Card className="mx-auto mb-3 w-full shadow-none border-1 border-slate-100 ">
                                     <Flex className="gap-4 p-5 py-3 w-full">
                                     <div>
-                                        <Text className="text-sm font-semibold text-gray-500">Attempted</Text>
-                                        <Metric className="font-bold text-xl text-gray-600">{attempts}</Metric>
+                                        <Text className="text-sm font-normal text-slate-500">Attempted</Text>
+                                        <Metric className="font-bold text-xl text-slate-600">{attempts}</Metric>
                                     </div>
                                     <div>
-                                        <Text className="text-sm font-semibold text-gray-500">Attempts Left</Text>
-                                        <Metric className="font-bold text-xl text-gray-600">{remainingAttempts}</Metric>
+                                        <Text className="text-sm font-normal text-slate-500">Attempts Left</Text>
+                                        <Metric className="font-bold text-lg text-slate-600">{remainingAttempts}</Metric>
                                     </div>
                                     </Flex>
                                 </Card>
