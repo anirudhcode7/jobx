@@ -1,5 +1,7 @@
 import React from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Accordion, AccordionItem, useDisclosure} from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 export default function QuestionTypeModal({type}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -13,15 +15,15 @@ export default function QuestionTypeModal({type}) {
  // Determine button class and modal header text based on the type
   switch (trimmedLowercaseType) {
     case 'situational':
-      buttonClass = "bg-rose-50 text-rose-400 font-medium text-xs border-1 border-rose-100";
+      buttonClass = "bg-rose-50 text-rose-400 font-medium text-xs border-1 border-rose-100 align-middle";
       buttonContent = "Situational Question";
       break;
     case 'technical':
-      buttonClass = "bg-lime-50 text-lime-600 font-medium text-xs border-1 border-lime-100";
+      buttonClass = "bg-lime-50 text-lime-600 font-medium text-xs border-1 border-lime-100 align-middle";
       buttonContent = "Technical Question";
       break;
     case 'background':
-      buttonClass = "bg-purple-50 text-purple-500 font-medium text-xs border-1 border-purple-100";
+      buttonClass = "bg-purple-50 text-purple-500 font-medium text-xs border-1 border-purple-100 align-middle";
       buttonContent = "Background Question";
       break;
     default:
@@ -32,8 +34,8 @@ export default function QuestionTypeModal({type}) {
 
   return (
     <>
-    <Button size="sm" className={buttonClass} style={{margin: '0'}} onPress={onOpen}>{buttonContent}</Button>
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" >
+    <Button size="sm" className={buttonClass} style={{margin: '0'}} onPress={onOpen}><FontAwesomeIcon icon={faCircleInfo} /> {buttonContent}</Button>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl" scrollBehavior="inside">
       <ModalContent>
         {(onClose) => (
           <>

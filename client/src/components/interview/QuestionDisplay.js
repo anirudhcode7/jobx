@@ -2,7 +2,7 @@ import React from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
 const QuestionDisplay = ({ question, currentQuestionIndex }) => (
-  <div className="mb-3 bg-white border-1 border-gray-100 text-sm md:text-2xl p-3 rounded-lg text-slate-600"  style={{ minHeight: '100px' }}>
+  <div className="mb-3 bg-white border-gray-100 text-sm md:text-2xl px-2 rounded-lg text-slate-600"  style={{ minHeight: '80px' }}>
     {question && (
       <TypeAnimation
         key={currentQuestionIndex}
