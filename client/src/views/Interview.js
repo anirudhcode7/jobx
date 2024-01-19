@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchQuestions, submitInterview, evaluateInterview } from '../api/interviewApi';
 import QuestionDisplay from '../components/interview/QuestionDisplay';
-import TextInputWithMic from '../components/interview/TextInputWithMic';
+// import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/core/NavBar';
-import {Flex, Metric, Text } from "@tremor/react";
+import {Flex } from "@tremor/react";
 import {Chip, Button, Tooltip} from "@nextui-org/react";
 import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
 import { Textarea } from "@tremor/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone,faArrowRight, faArrowLeft,faCheck} from '@fortawesome/free-solid-svg-icons';
-
+import { faMicrophone,faArrowRight, faArrowLeft,faCheck, faKeyboard, faWaveSquare} from '@fortawesome/free-solid-svg-icons';
+import '../components/interview/interview.css';
 
 const InterviewPage = () => {
   var { authToken, setToken } = useAuth();
@@ -22,10 +22,36 @@ const InterviewPage = () => {
   const navigate = useNavigate();
 
   const [isRecording, setIsRecording] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true);
+  const [isQuestionPrevMoved, setQuestionPrevMoved] = useState(false);
+  const [textAreaClass, setTextAreaClass] = useState("h-32");
+  const textareaRef = useRef(null);
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
+    // Setting up the text area height
+    if (!isRecording){
+      setTextAreaClass("h-64");
+    }
+    else{
+      setTextAreaClass("h-32")
+    }
   };
+
+  const toggleTyping = () => {
+    console.log("clicking", isTyping);
+    setIsTyping(!isTyping);
+    setIsTextAreaDisabled(!isTextAreaDisabled);
+    // Setting up the text area height
+    if (!isTyping){
+      setTextAreaClass("h-64");
+    }
+    else {
+      setTextAreaClass("h-32")
+    }
+  };
+
 
   const handleTranscription = (transcribedText) => {
     const updatedUserAnswers = [...userAnswers];
@@ -72,6 +98,7 @@ const InterviewPage = () => {
       console.log("Prev button clicked: ", currentQuestionIndex)
       if (currentQuestionIndex > 0) {
         setCurrentQuestionIndex(currentQuestionIndex - 1);
+        setQuestionPrevMoved(true);
       }
     };
 
@@ -79,6 +106,7 @@ const InterviewPage = () => {
       console.log("Next button clicked: ", currentQuestionIndex)
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setQuestionPrevMoved(false);
       }
     };
 
@@ -122,94 +150,118 @@ const InterviewPage = () => {
   const questionsCount = questions.length;
   const isFirstQuestion = currentQuestionIndex === 0;
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
-  const buttonText = isLastQuestion ? 'Submit' : 'Next';
-  const buttonColor = isLastQuestion ? 'bg-green-500 hover:bg-green-600' : 'bg-purple-600 hover:bg-purple-700';
 
   return (
     <> 
       <NavBar />
       <div className="bg-gray-100 flex flex-col items-center justify-center" style={{height: 'calc(100vh - 65px)'}}>
         <div className="bg-white m-3 p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-full flex flex-col">
-          <Flex className="gap-4 p-0 py-1 mb-3 w-full">
-            <div>
-              <Chip variant="shadow"
-                classNames={{
-                base: "border-gray/50 border-1 rounded-lg bg-white shadow-slate-200/30",
-                content: "text-slate-500 font-normal py-1",
-                }}
-              > Question <span style={{letterSpacing: '1.6px'}}>{currentQuestionIndex + 1}/{questionsCount}</span></Chip> 
-            </div>
-            <div>
-                <QuestionCategoryModal type={questions[currentQuestionIndex] ? questions[currentQuestionIndex].type : ''} />
-               
-            </div>
-          </Flex>
+          {!isRecording ?
+            <Flex className="gap-4 p-0 py-1 mb-3 w-full">
+              <div>
+                <Chip variant="shadow"
+                  classNames={{
+                  base: "border-gray/50 border-1 rounded-lg bg-white shadow-slate-200/30",
+                  content: "text-slate-500 font-normal py-1",
+                  }}
+                > Question <span style={{letterSpacing: '1.6px'}}>{currentQuestionIndex + 1}/{questionsCount}</span></Chip> 
+              </div>
+              <div>
+                  <QuestionCategoryModal type={questions[currentQuestionIndex] ? questions[currentQuestionIndex].type : ''} />
+                
+              </div>
+            </Flex>
+            :
+            <></>
+          }
           
+          <QuestionDisplay question={questions[currentQuestionIndex] ? questions[currentQuestionIndex].question : ''} skipAnimate={isQuestionPrevMoved} currentQuestionIndex={currentQuestionIndex} />
           
-          <QuestionDisplay question={questions[currentQuestionIndex] ? questions[currentQuestionIndex].question : ''} currentQuestionIndex={currentQuestionIndex} />
-          {/* <TextInputWithMic 
-            value={userAnswers[currentQuestionIndex]} 
-            onChange={handleAnswerChange} 
-            isRecording={isRecording} 
-            toggleRecording={toggleRecording} 
-          /> */}
+
           <Textarea
             onChange={handleAnswerChange}
             id="description"
-            placeholder="Start typing here..."
-            className="rounded-md transition-all duration-300 focus:outline-none focus:border-1 focus:border-slate-400   h-25 focus:h-32"
+            placeholder="Start answering here..."
+            className={`rounded-md transition-all duration-500 focus:outline-none focus:border-1 focus:border-slate-400 focus:h-64 ${textAreaClass}`}
             value={userAnswers[currentQuestionIndex] ? userAnswers[currentQuestionIndex] : ''}
+            disabled={isTextAreaDisabled}
+            ref={textareaRef}
           />
+          { isRecording &&
+            <div className="mt-3 relative flex justify-center items-center">
+            <div className="transribe_shadow rounded-xl ">
+              <div class="w-full rounded-xl bg-white text-slate-500 p-2 px-4 text-sm font-medium"> <FontAwesomeIcon icon={faWaveSquare} size="sm" /> transcribing your answer ...</div>
+            </div>
+            </div>
+
+          }
+
           <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
-          {/* <button
-            className={`w-full my-4 py-2 px-4 text-white font-semibold rounded-md focus:outline-none focus:ring ${buttonColor}`}
-            onClick={isLastQuestion ? handleSubmit : handleNextQuestion}
-          >
-            {buttonText}
-          </button> */}
+
             <Flex className="gap-4 p-0 py-1 mt-3 w-full">
             <div>
-            <Button color="primary" size="lg" className="p-8 font-medium bg-blue-600">
-              {isRecording ? 
-              <>
-              <p>Done</p>
-              
-              </>
-               
-              :
-              <>
-              <FontAwesomeIcon icon={faMicrophone} size="lg" />
-              <p>Answer</p>
-              </>
-                
+             { !isTyping ?
+                  <Button color="primary" size="lg" onClick={toggleRecording} className="p-8 font-medium bg-blue-600">
+                    {isRecording ? 
+                    <>
+                      <FontAwesomeIcon icon={faCheck} size="lg" />
+                      <p>Done</p>
+                    </>
+                    :
+                    <>
+                      <FontAwesomeIcon icon={faMicrophone} size="lg" />
+                      { userAnswers[currentQuestionIndex] ? 
+                        <p>Continue</p> : <p>Answer</p>
+                      }
+                      
+                    </>
+                    }
+                  </Button> 
+                  : <></>
               }
-            </Button> 
+              {isRecording ? <></>
+              :  
+                <Tooltip showArrow={true} content={userAnswers[currentQuestionIndex] ?  "Edit Answer" : "Type Answer"}  placement='bottom'>
+                  <Button color="primary" size="lg" variant="ghost" onClick={toggleTyping} className="py-8  mx-2 font-medium border-blue-600 hover:bg-blue-600 border-1">
+                    { !isTyping ?
+                      <FontAwesomeIcon icon={faKeyboard} size="lg" />
+                      :
+                      <>
+                        <FontAwesomeIcon icon={faCheck} size="lg" /> <p>Done</p>
+                      </>
+                    }
+                  </Button>
+                </Tooltip>
+              }
             </div>
-            <div>
-            {isFirstQuestion ? <></>
-            :
-            <Tooltip showArrow={true} content="Previous Question" placement='bottom'>
-              <Button color="primary" size="lg" variant="ghost" className="py-8 px-2 mx-2 font-medium border-blue-600 border-1"
-              onClick={handlePrevQuestion}>
-                <FontAwesomeIcon icon={faArrowLeft}  size="lg" />
-              </Button>
-            </Tooltip>
-            }
-            <Tooltip showArrow={true} content={isLastQuestion ? "Submit Interview" : "Next Question"}  placement='bottom'>
-              <Button color="primary" size="lg" variant="ghost" className="py-8 px-2 mx-2 font-medium border-blue-600 border-1"
-              onClick={isLastQuestion ? handleSubmit : handleNextQuestion}>
-                {isLastQuestion ?
-                <>
-                  <FontAwesomeIcon icon={faCheck} size="lg" />
-                </>
-                  :
-                <FontAwesomeIcon icon={faArrowRight} size="lg" />
-                }
-              </Button>
-            </Tooltip>
             
-               
-            </div>
+            {!isRecording && !isTyping ? 
+              <div>
+                {isFirstQuestion ? <></>
+                :
+                <Tooltip showArrow={true} content="Previous Question" placement='bottom'>
+                  <Button color="primary" size="lg" variant="ghost" className="py-8 px-2 mx-2 font-medium border-blue-600 border-1"
+                  onClick={handlePrevQuestion}>
+                    <FontAwesomeIcon icon={faArrowLeft}  size="lg" />
+                  </Button>
+                </Tooltip>
+                }
+                <Tooltip showArrow={true} content={isLastQuestion ? "Submit Interview" : "Next Question"}  placement='bottom'>
+                  <Button color="primary" size="lg" variant="ghost" className="py-8 px-2 mx-2 font-medium border-blue-600 border-1"
+                  onClick={isLastQuestion ? handleSubmit : handleNextQuestion}>
+                    {isLastQuestion ?
+                    <>
+                      <FontAwesomeIcon icon={faCheck} size="lg" />
+                    </>
+                      :
+                    <FontAwesomeIcon icon={faArrowRight} size="lg" />
+                    }
+                  </Button>
+                </Tooltip>
+              </div> 
+              :
+              <></>
+            }
           </Flex>
         </div>
       </div>

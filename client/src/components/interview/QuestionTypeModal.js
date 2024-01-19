@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Accordion, AccordionItem, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalBody, ModalFooter, Button, Accordion, AccordionItem, useDisclosure} from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,7 +35,7 @@ export default function QuestionTypeModal({type}) {
   return (
     <>
     <Button size="sm" className={buttonClass} style={{margin: '0'}} onPress={onOpen}><FontAwesomeIcon icon={faCircleInfo} /> {buttonContent}</Button>
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl" scrollBehavior="inside">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" scrollBehavior="outside">
       <ModalContent>
         {(onClose) => (
           <>
