@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchQuestions, submitInterview, evaluateInterview } from '../api/interviewApi';
 import QuestionDisplay from '../components/interview/QuestionDisplay';
+import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
+import SubmitIntervieModal from '../components/interview/SubmitInterviewModal';
+
+
 // import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/core/NavBar';
 import {Flex } from "@tremor/react";
-import {Chip, Button, Tooltip} from "@nextui-org/react";
-import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
+import {Chip, Button, Tooltip, useDisclosure} from "@nextui-org/react";
+
 import { Textarea } from "@tremor/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone,faArrowRight, faArrowLeft,faCheck, faKeyboard, faWaveSquare} from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +31,7 @@ const InterviewPage = () => {
   const [isQuestionPrevMoved, setQuestionPrevMoved] = useState(false);
   const [textAreaClass, setTextAreaClass] = useState("h-32");
   const textareaRef = useRef(null);
+  const {isOpen: isSubmitModalOpen, onOpen: onOpenSubmitModal, onClose: onCloseSubmitModal} = useDisclosure();
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
@@ -198,7 +203,7 @@ const InterviewPage = () => {
 
           <SpeechToText onTranscription={handleTranscription} isRecording={isRecording} />
 
-            <Flex className="gap-4 p-0 py-1 mt-3 w-full">
+          <Flex className="gap-4 p-0 py-1 mt-3 w-full">
             <div>
              { !isTyping ?
                   <Button color="primary" size="lg" onClick={toggleRecording} className="p-8 font-medium bg-blue-600">
@@ -248,7 +253,7 @@ const InterviewPage = () => {
                 }
                 <Tooltip showArrow={true} content={isLastQuestion ? "Submit Interview" : "Next Question"}  placement='bottom'>
                   <Button color="primary" size="lg" variant="ghost" className="py-8 px-2 mx-2 font-medium border-blue-600 border-1"
-                  onClick={isLastQuestion ? handleSubmit : handleNextQuestion}>
+                  onPress={isLastQuestion ? onOpenSubmitModal : handleNextQuestion}>
                     {isLastQuestion ?
                     <>
                       <FontAwesomeIcon icon={faCheck} size="lg" />
@@ -263,6 +268,7 @@ const InterviewPage = () => {
               <></>
             }
           </Flex>
+          <SubmitIntervieModal isSubmitModalOpen={isSubmitModalOpen} onOpenSubmitModal={onOpenSubmitModal} onCloseSubmitModal={onCloseSubmitModal} handleSubmit={handleSubmit} />
         </div>
       </div>
     </>
