@@ -6,10 +6,10 @@ import QuoteSection from '../components/landing/QuoteSection.js';
 export default function LandingPage() {
 
   return (
-    <>  
-        <NavBar />
-        <MainSection />
-        <QuoteSection />
+    <>
+      <NavBar />
+      <MainSection />
+      <QuoteSection />
     </>
   )
 }

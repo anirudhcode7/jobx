@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import FormAction from '../components/FormAction';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import your AuthContext
 import NavBar from '../components/core/NavBar';
-import {Grid, Col, Flex, Metric, Text } from "@tremor/react";
-import {Card, CardHeader, CardBody} from "@nextui-org/react";
+import { Grid, Col, Flex, Metric, Text } from "@tremor/react";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
 import StartInterviewModal from '../components/home/StartInterviewModal';
 
@@ -27,15 +26,15 @@ const Home = () => {
                 Authorization: `Bearer ${authToken}`,
             },
         })
-        .then(response => {
-            // Assuming the response contains the count of interviews
-            const interviewCount = response.data.count;
-            setRemainingAttempts(MAX_ATTEMPTS - interviewCount);
-            setAttempts(interviewCount);
-        })
-        .catch(error => {
-            console.error('Error fetching interview count:', error);
-        });
+            .then(response => {
+                // Assuming the response contains the count of interviews
+                const interviewCount = response.data.count;
+                setRemainingAttempts(MAX_ATTEMPTS - interviewCount);
+                setAttempts(interviewCount);
+            })
+            .catch(error => {
+                console.error('Error fetching interview count:', error);
+            });
     }, [authToken]);
 
     const handleClick = (e) => {
@@ -64,18 +63,18 @@ const Home = () => {
                             <CardBody>
                                 <Card className="mx-auto mb-3 w-full shadow-none border-1 border-slate-100 ">
                                     <Flex className="gap-4 p-5 py-3 w-full">
-                                    <div>
-                                        <Text className="text-sm font-normal text-slate-500">Attempted</Text>
-                                        <Metric className="font-bold text-xl text-slate-600">{attempts}</Metric>
-                                    </div>
-                                    <div>
-                                        <Text className="text-sm font-normal text-slate-500">Attempts Left</Text>
-                                        <Metric className="font-bold text-lg text-slate-600">{remainingAttempts}</Metric>
-                                    </div>
+                                        <div>
+                                            <Text className="text-sm font-normal text-slate-500">Attempted</Text>
+                                            <Metric className="font-bold text-xl text-slate-600">{attempts}</Metric>
+                                        </div>
+                                        <div>
+                                            <Text className="text-sm font-normal text-slate-500">Attempts Left</Text>
+                                            <Metric className="font-bold text-lg text-slate-600">{remainingAttempts}</Metric>
+                                        </div>
                                     </Flex>
                                 </Card>
                                 <StartInterviewModal handleClick={handleClick} />
-                                
+
                             </CardBody>
                         </Card>
                     </Col>

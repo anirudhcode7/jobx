@@ -1,12 +1,11 @@
-import Header from "../components/Header"
 import Signup from "../components/auth/Signup"
 import NavBar from "../components/core/NavBar"
 
-export default function SignupPage(){
-    return(
-        <>  
+export default function SignupPage() {
+    return (
+        <>
             <NavBar />
-            <Signup/>
+            <Signup />
         </>
     )
 }
