@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { signupFields } from "../../constants/formFields";
 import FormAction from "../FormAction";
-import Input from "../Input";
-import NotificationBanner from "../NotificationBanner"; // Import the NotificationBanner component
-import axios from 'axios';
+import NotificationBanner from "../NotificationBanner";
+import useNotification from '../../services/useNotification';
 import { useNavigate } from 'react-router-dom';
+import { saveUserToDB } from '../../api/authApi';
+import InputField from '../Input';
 
 const fields = signupFields;
 let fieldsState = {};
@@ -14,57 +15,16 @@ export default function Signup() {
   const [signUpState, setSignUpState] = useState(fieldsState);
   const navigate = useNavigate();
 
+  const { notification, showNotification, closeNotification } = useNotification();
+
   const handleChange = (e) => {
     setSignUpState({ ...signUpState, [e.target.id]: e.target.value });
   }
 
-  const [notification, setNotification] = useState(null);
-
-  const showNotification = (message, type) => {
-    setNotification({ message, type });
-  }
-
-  const closeNotification = () => {
-    setNotification(null);
-  }
-
   const handleClick = async (e) => {
     e.preventDefault();
-    saveUserToDB();
+    saveUserToDB(signUpState, showNotification, () => navigate('/'));
   }
-
-  const saveUserToDB = async () => {
-    try {
-      var data = {
-        username: signUpState["username"],
-        password: signUpState["password"],
-      }
-
-      const response = await axios.post('http://localhost:3004/api/auth/register', data);
-      console.log("Status:",response.status);
-      console.log("Response:",response.data);
-
-      if (response.status === 201) {
-        console.log('Registration successful');
-        showNotification('Registration successful', 'success');
-        navigate('/');
-      }
-    } catch (error) {
-      console.log('Registration failed');
-      if (error.response.status === 400) {
-        console.log("Username is already in use.")
-        showNotification('Username is already in use.', 'error');
-      }
-      else if (error.response.status === 500) {
-        console.error('Error during registration:', error);
-        showNotification('Network or server error. Please try again later.', 'error');
-      }
-      else {
-        console.log("Failed")
-        showNotification('Registration failed. Please try again.', 'error');
-      }
-    }
-  };
 
   return (
     <div>
@@ -76,26 +36,37 @@ export default function Signup() {
         />
       )}
 
-        <div className="">
-          {
-            fields.map(field =>
-              <Input
-                key={field.id}
-                handleChange={handleChange}
-                value={signUpState[field.id]}
-                labelText={field.labelText}
-                labelFor={field.labelFor}
-                id={field.id}
-                name={field.name}
-                type={field.type}
-                isRequired={field.isRequired}
-                placeholder={field.placeholder}
-              />
-            )
-          }
-        </div>
+      <div className="flex flex-col items-center justify-center " style={{ height: '85vh' }}>
+        <div className="bg-white p-8 rounded shadow-xl border-1 border-slate-100 w-96 mx-2">
+          <h1 className="text-2xl font-bold mb-4 text-gray-600 text-center">Sign Up</h1>
+          <div className="mb-4">
+            {
+              fields.map(field =>
+                <InputField
+                  key={field.id}
+                  handleChange={handleChange}
+                  value={signUpState[field.id]}
+                  labelText={field.labelText}
+                  labelFor={field.labelFor}
+                  id={field.id}
+                  name={field.name}
+                  type={field.type}
+                  isRequired={field.isRequired}
+                  placeholder={field.placeholder}
+                />
 
-        <FormAction handleClick={handleClick} text="Sign Up" />
+              )
+            }
+          </div>
+
+          <FormAction handleClick={handleClick} text="Sign Up" />
+          <p className="mt-4 text-sm text-gray-600 text-center">
+            Already a user? <a href="/login" className="text-blue-700 font-semibold">Sign In</a>
+          </p>
+        </div>
+      </div>
+
     </div>
+
   )
 }

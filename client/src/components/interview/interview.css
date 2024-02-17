@@ -1,0 +1,66 @@
+.transribe_shadow {
+  position: relative;
+  z-index: 1 !important;
+  text-align: center;
+  justify-content: center;
+  font-weight: medium;
+  border-radius: 50%;
+  width: auto;
+  height: auto;
+  color: white;
+  /* Choose the desired text color */
+  background: linear-gradient(45deg,
+      #fbc4e4,
+      #8787ff,
+      #92eefe,
+      #d4baff,
+      #f8b3ec,
+      #92eefe,
+      #d59dfb,
+      #6ee6f6,
+      #b088f4);
+  background-size: 200%;
+
+  animation: transcribe_animate 20s linear infinite;
+}
+
+.transribe_shadow:before,
+.transribe_shadow:after {
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      #efbcda,
+      #8cffd9,
+      #ac94d2,
+      #ff9494,
+      #8a75f6,
+      #e48dc0,
+      #6ee6f6,
+      #b088f4);
+  background-size: 200%;
+  z-index: -1;
+  animation: transcribe_animate 15s linear infinite;
+}
+
+.transribe_shadow:after {
+  filter: blur(12px);
+}
+
+@keyframes transcribe_animate {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 300% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
