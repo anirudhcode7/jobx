@@ -21,7 +21,7 @@ const Home = () => {
 
     useEffect(() => {
         // Fetch the current count of interviews for the user
-        axios.get('http://localhost:3004/api/interview/count', {
+        axios.get('https://jobx-32a058281844.herokuapp.com/api/interview/count', {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
