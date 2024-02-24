@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3004/api/auth';
+//const API_URL = 'http://localhost:3004/api/auth';
+const API_URL = 'https://jobx-32a058281844.herokuapp.com/api/auth';
 
 export const authenticateUser = async (loginState, showNotification, setToken, onSuccess) => {
 
