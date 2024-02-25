@@ -42,7 +42,7 @@ export default function Login() {
             )}
 
             <div className="flex flex-col items-center justify-center " style={{ height: '85vh' }}>
-                <div className="bg-white p-8 rounded shadow-xl border-1 border-slate-100 w-96 mx-2">
+                <div className="bg-white p-5 lg:p-8 rounded shadow-xl border-1 border-slate-100 w-11/12 lg:w-96 mx-2">
                     <h1 className="text-2xl font-bold mb-4 text-gray-600 text-center">Sign In</h1>
                     <div className="mb-4">
                         {

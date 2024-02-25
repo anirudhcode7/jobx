@@ -6,11 +6,11 @@ export default function SubmitIntervieModal({ isSubmitModalOpen, onOpenSubmitMod
 
   return (
     <>
-      <Modal isOpen={isSubmitModalOpen} placement="bottom" onOpen={onOpenSubmitModal} size="xl" scrollBehavior="outside"
+      <Modal isOpen={isSubmitModalOpen}  onOpen={onOpenSubmitModal} size="xl"
         className="" hideCloseButton
       >
 
-        <ModalContent className=" mt-10">
+        <ModalContent>
 
           <>
             <ModalHeader className="pb-0">

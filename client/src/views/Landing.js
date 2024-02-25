@@ -9,7 +9,7 @@ export default function LandingPage() {
     <>
       <NavBar />
       <MainSection />
-      <QuoteSection />
+      {/* <QuoteSection /> */}
     </>
   )
 }
