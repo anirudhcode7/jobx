@@ -1,17 +1,21 @@
 import React from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
-const QuestionDisplay = ({ question, currentQuestionIndex }) => (
-  <div className="mb-6 bg-gray-200 p-4 rounded-lg">
+const QuestionDisplay = ({ question, currentQuestionIndex, skipAnimate }) => (
+  <div className="mb-3 bg-white border-gray-100 text-sm md:text-2xl px-2 rounded-lg text-slate-600" style={{ minHeight: '80px' }}>
     {question && (
-      <TypeAnimation
-        key={currentQuestionIndex}
-        sequence={[question]}
-        wrapper="span"
-        speed={50}
-        style={{ fontSize: '2em', display: 'inline-block' }}
-        repeat={0}
-      />
+      skipAnimate ? (
+        <span>{question}</span>
+      ) : (
+        <TypeAnimation
+          key={currentQuestionIndex}
+          sequence={[question]}
+          wrapper="span"
+          speed={60}
+          style={{ display: 'inline-block' }}
+          repeat={0}
+        />
+      )
     )}
   </div>
 );

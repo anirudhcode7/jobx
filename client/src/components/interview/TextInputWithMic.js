@@ -10,9 +10,9 @@ const TextInputWithMic = ({ value, onChange, isRecording, toggleRecording }) => 
       onChange={onChange}
     />
     <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-      <FontAwesomeIcon 
-        icon={faMicrophone} 
-        onClick={toggleRecording} 
+      <FontAwesomeIcon
+        icon={faMicrophone}
+        onClick={toggleRecording}
         className={`cursor-pointer ${isRecording ? 'text-green-500' : 'text-gray-500'}`}
         size="2x"
       />

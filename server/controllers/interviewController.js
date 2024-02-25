@@ -27,7 +27,7 @@ const getQuestions = async (req, res) => {
         { $sample: { size: numberOfQuestions } }
       ]);
   
-      res.json({ Questions: randomQuestions.map(q => q.question) });
+      res.json({ Questions: randomQuestions });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error fetching questions' });

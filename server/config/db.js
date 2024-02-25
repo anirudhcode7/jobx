@@ -4,6 +4,8 @@ require('dotenv').config(); // If you're using environment variables
 // Define the database connection URL. You can use environment variables here.
 const dbURL = process.env.MONGODB_URI || 'mongodb://localhost:27017/your-database-name';
 
+console.log("dbURL: ", dbURL)
+
 // Establish the database connection
 mongoose.connect(dbURL, {
   useNewUrlParser: true,
