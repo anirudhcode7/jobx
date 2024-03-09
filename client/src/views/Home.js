@@ -8,6 +8,8 @@ import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
 import StartInterviewModal from '../components/home/StartInterviewModal';
 
+require("dotenv").config();
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
 
 
 const MAX_ATTEMPTS = process.env.REACT_APP_MAX_ATTEMPTS || 5;
@@ -21,7 +23,7 @@ const Home = () => {
 
     useEffect(() => {
         // Fetch the current count of interviews for the user
-        axios.get('https://jobx-32a058281844.herokuapp.com/api/interview/count', {
+        axios.get(`${BACKEND_URL}/api/interview/count`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
