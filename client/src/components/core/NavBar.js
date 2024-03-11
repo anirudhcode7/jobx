@@ -35,7 +35,7 @@ export default function NavBar() {
   const menuItems = [
     "Home",
     "Features",
-    "Job portal",
+    "Job Portal",
     "Resources",
     "Contact",
     "Log Out",
@@ -141,10 +141,12 @@ export default function NavBar() {
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
               color={
-                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
+                index === menuItems.length - 1 ? "danger" : "foreground"
               }
               className="w-full"
-              href="#"
+              href={
+                index === menuItems.length - 1 ? "/" : "#"
+              }
               size="lg"
             >
               {item}

@@ -15,15 +15,15 @@ export default function QuestionTypeModal({ type }) {
   // Determine button class and modal header text based on the type
   switch (trimmedLowercaseType) {
     case 'situational':
-      buttonClass = "bg-rose-50 text-rose-400 font-medium text-xs border-1 border-rose-100 align-middle";
+      buttonClass = "bg-rose-50 text-rose-400 font-medium text-xs lg:text-sm border-1 border-rose-100 align-middle";
       buttonContent = "Situational Question";
       break;
     case 'technical':
-      buttonClass = "bg-lime-50 text-lime-600 font-medium text-xs border-1 border-lime-100 align-middle";
+      buttonClass = "bg-lime-50 text-lime-600 font-medium text-xs lg:text-sm border-1 border-lime-100 align-middle";
       buttonContent = "Technical Question";
       break;
     case 'background':
-      buttonClass = "bg-purple-50 text-purple-500 font-medium text-xs border-1 border-purple-100 align-middle";
+      buttonClass = "bg-purple-50 text-purple-500 font-medium text-xs lg:text-sm border-1 border-purple-100 align-middle";
       buttonContent = "Background Question";
       break;
     default:
@@ -34,8 +34,8 @@ export default function QuestionTypeModal({ type }) {
 
   return (
     <>
-      <Button size="sm" className={buttonClass} style={{ margin: '0' }} onPress={onOpen}><FontAwesomeIcon icon={faCircleInfo} /> {buttonContent}</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" scrollBehavior="outside">
+      <Button size="sm" className={buttonClass} style={{ margin: '0', transform: 'scale(0.9)' }} onPress={onOpen}><FontAwesomeIcon icon={faCircleInfo} /> {buttonContent}</Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" scrollBehavior="outside" placement="center">
         <ModalContent>
           {(onClose) => (
             <>

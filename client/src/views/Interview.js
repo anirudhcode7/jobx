@@ -160,14 +160,14 @@ const InterviewPage = () => {
     <>
       <NavBar />
       <div className="bg-gray-100 flex flex-col items-center justify-center" style={{ height: 'calc(100vh - 65px)' }}>
-        <div className="bg-white m-3 p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-full flex flex-col">
+        <div className="bg-white m-3 p-2 lg:p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-11/12 lg:w-full flex flex-col">
           {!isRecording ?
             <Flex className="gap-4 p-0 py-1 mb-3 w-full">
               <div>
                 <Chip variant="shadow"
                   classNames={{
                     base: "border-gray/50 border-1 rounded-lg bg-white shadow-slate-200/30",
-                    content: "text-slate-500 font-normal py-1",
+                    content: "text-slate-500 font-normal py-1 text-xs lg:text-sm",
                   }}
                 > Question <span style={{ letterSpacing: '1.6px' }}>{currentQuestionIndex + 1}/{questionsCount}</span></Chip>
               </div>
@@ -206,7 +206,7 @@ const InterviewPage = () => {
           <Flex className="gap-4 p-0 py-1 mt-3 w-full">
             <div>
               {!isTyping ?
-                <Button color="primary" size="lg" onClick={toggleRecording} className="p-8 font-medium bg-blue-600">
+                <Button color="primary" size="sm" onClick={toggleRecording} className="py-6 w-0 lg:w-auto lg:p-8 font-medium bg-blue-600 text-md lg:text-lg">
                   {isRecording ?
                     <>
                       <FontAwesomeIcon icon={faCheck} size="lg" />
@@ -216,7 +216,7 @@ const InterviewPage = () => {
                     <>
                       <FontAwesomeIcon icon={faMicrophone} size="lg" />
                       {userAnswers[currentQuestionIndex] ?
-                        <p>Continue</p> : <p>Answer</p>
+                        <span className="hidden lg:block"><p>Continue</p></span> : <span className="hidden lg:block"><p>Answer</p></span>
                       }
 
                     </>
@@ -227,7 +227,7 @@ const InterviewPage = () => {
               {isRecording ? <></>
                 :
                 <Tooltip showArrow={true} content={!isTyping ? (userAnswers[currentQuestionIndex] ? "Edit Answer" : "Type Answer") : "Finish Answering"} placement='bottom'>
-                  <Button color="primary" size="lg" onClick={toggleTyping} className="py-8  mx-2 font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1">
+                  <Button color="primary" size="sm" onClick={toggleTyping} className="py-6 lg:p-8 text-md w-0 lg:w-auto lg:text-lg mx-2 font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1">
                     {!isTyping ?
                       <FontAwesomeIcon icon={faKeyboard} size="lg" />
                       :
@@ -245,14 +245,14 @@ const InterviewPage = () => {
                 {isFirstQuestion ? <></>
                   :
                   <Tooltip showArrow={true} content="Previous Question" placement='bottom'>
-                    <Button size="lg" className="py-8 px-2 mx-2 font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1"
+                    <Button size="sm" className="py-6 lg:p-8 text-md w-0 lg:w-auto lg:text-lg mx-2 font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1"
                       onClick={handlePrevQuestion}>
                       <FontAwesomeIcon icon={faArrowLeft} size="lg" />
                     </Button>
                   </Tooltip>
                 }
                 <Tooltip showArrow={true} content={isLastQuestion ? "Submit Interview" : "Next Question"} placement='bottom'>
-                  <Button size="lg" className="py-8 px-2 mx-2 font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1"
+                  <Button size="sm" className=" py-6 lg:p-8 text-md w-0 lg:w-auto lg:text-lg font-medium border-blue-600 bg-white text-blue-600 hover:bg-blue-600 hover:text-white border-1"
                     onPress={isLastQuestion ? onOpenSubmitModal : handleNextQuestion}>
                     {isLastQuestion ?
                       <>
