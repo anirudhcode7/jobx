@@ -210,7 +210,7 @@ const InterviewPage = () => {
                   {isRecording ?
                     <>
                       <FontAwesomeIcon icon={faCheck} size="lg" />
-                      <p>Done</p>
+                      <p className="hidden lg:block">Done</p>
                     </>
                     :
                     <>
@@ -232,7 +232,7 @@ const InterviewPage = () => {
                       <FontAwesomeIcon icon={faKeyboard} size="lg" />
                       :
                       <>
-                        <FontAwesomeIcon icon={faCheck} size="lg" /> <p>Done</p>
+                        <FontAwesomeIcon icon={faCheck} size="lg" /> <p className="hidden lg:block">Done</p>
                       </>
                     }
                   </Button>
