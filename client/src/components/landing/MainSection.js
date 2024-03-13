@@ -18,7 +18,7 @@ export default function MainSection() {
                     &nbsp; is here!
                 </h1>
                     <div className="flex flex-row">
-                        <MainBlueButton hrefLink="/login" text="Get Started" />
+                        <MainBlueButton hrefLink="/home" text="Get Started" />
                         <Button variant="bordered" color="primary" className="hidden md:block px-11 rounded border-blue-500 text-sm font-semibold text-blue-600 border">View Jobs</Button>
                     </div>
                 </div>

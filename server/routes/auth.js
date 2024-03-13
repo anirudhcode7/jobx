@@ -8,6 +8,9 @@ router.post('/register', AuthController.register);
 // Log in an existing user
 router.post('/login', AuthController.login);
 
+// Get User data based on authToken
+router.get('/user/info', AuthController.getUser);
+
 // Other authentication-related routes can be added here
 
 module.exports = router;

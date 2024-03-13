@@ -7,6 +7,7 @@ import { Grid, Col, Flex, Metric, Text } from "@tremor/react";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
 import StartInterviewModal from '../components/home/StartInterviewModal';
+import { fetchInterviewCounts } from '../api/homeApi';
 
 
 
@@ -15,26 +16,37 @@ const MAX_ATTEMPTS = process.env.REACT_APP_MAX_ATTEMPTS || 5;
 const Home = () => {
 
     const navigate = useNavigate();
-    const { authToken } = useAuth(); // Get the authToken from your AuthContext
+    const { authToken, userInfo, setToken } = useAuth(); // Get the authToken from your AuthContext
     const [remainingAttempts, setRemainingAttempts] = useState(MAX_ATTEMPTS);
     const [attempts, setAttempts] = useState(0);
 
     useEffect(() => {
-        // Fetch the current count of interviews for the user
-        axios.get('https://jobx-32a058281844.herokuapp.com/api/interview/count', {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-            },
-        })
-            .then(response => {
-                // Assuming the response contains the count of interviews
+        // If there is no authToken in the context, retrieve it from localStorage
+        console.log("inside use effect")
+        if (!authToken) {
+          const storedAuthToken = localStorage.getItem('authToken');
+          if (storedAuthToken) {
+            setToken(storedAuthToken);
+          } else {
+            navigate('/login');
+            return;
+          }
+        }
+        // Fetch questions from the backend when the component mounts
+        const fetchData = async () => {
+            try {
+                const response = await fetchInterviewCounts(authToken);
                 const interviewCount = response.data.count;
                 setRemainingAttempts(MAX_ATTEMPTS - interviewCount);
                 setAttempts(interviewCount);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching interview count:', error);
-            });
+                // Handle error, e.g., show an error message to the user
+            }
+        };
+
+        fetchData();
+
     }, [authToken]);
 
     const handleClick = (e) => {
@@ -65,11 +77,11 @@ const Home = () => {
                                     <Flex className="gap-4 p-5 py-3 w-full">
                                         <div>
                                             <Text className="text-sm font-normal text-slate-500">Attempted</Text>
-                                            <Metric className="font-bold text-xl text-slate-600">{attempts}</Metric>
+                                            <Metric className="font-bold text-xl text-slate-600">{userInfo ? attempts: <>-</>}</Metric>
                                         </div>
                                         <div>
                                             <Text className="text-sm font-normal text-slate-500">Attempts Left</Text>
-                                            <Metric className="font-bold text-lg text-slate-600">{remainingAttempts}</Metric>
+                                            <Metric className="font-bold text-lg text-slate-600">{userInfo ? remainingAttempts: <>-</>}</Metric>
                                         </div>
                                     </Flex>
                                 </Card>

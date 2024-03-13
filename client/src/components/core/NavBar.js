@@ -1,8 +1,11 @@
 import React from 'react';
+import {Avatar, AvatarIcon} from "@nextui-org/react";
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarItem, Link, Button } from "@nextui-org/react";
-import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from "@nextui-org/react"
+import { Popover, PopoverTrigger, PopoverContent, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from "@nextui-org/react"
 import RightArrow from '../icons/RightArrow';
+import { useAuth } from '../../context/AuthContext';
+
 export const ChevronDown = ({ fill, size, height, width, ...props }) => {
   return (
     <svg
@@ -25,10 +28,10 @@ export const ChevronDown = ({ fill, size, height, width, ...props }) => {
   );
 };
 
-export default function NavBar() {
-
+export default function NavBar({ is_interview_page }) {
+  console.log("is_interview_page", is_interview_page);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const { authToken, userInfo } = useAuth();
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
   };
@@ -48,13 +51,13 @@ export default function NavBar() {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand as={Link} href="/">
-          <p color="foreground" className="font-extrabold text-transparent bg-clip-text bg-gradient-to-t from-blue-500 to-indigo-600">JOBX</p>
+        <NavbarBrand >
+        <Link href={is_interview_page ? undefined : "/"} underline="none"><p color="foreground" className="font-extrabold text-transparent bg-clip-text bg-gradient-to-t from-blue-500 to-indigo-600">JOBX</p></Link>
         </NavbarBrand>
       </NavbarContent>
 
 
-
+    {!is_interview_page && 
       <NavbarContent className="hidden sm:flex gap-5" justify="right">
         <NavbarItem  > {/* /isActive */}
           <Link color="foreground" href="/home" className="text-sm font-semibold subpixel-antialiased">
@@ -127,15 +130,72 @@ export default function NavBar() {
           </Link>
         </NavbarItem>
       </NavbarContent>
+    }
+    {!is_interview_page ? 
       <NavbarContent justify="end">
         <NavbarItem>
           {/* <MainBlueButton hrefLink="/" text="Get started" /> */}
-          <Button as={Link} href="/login" color="primary" variant="bordered" size="sm" className="text-xs font-semibold text-gray-600 px-4 border-slate-100 border hover:shadow-xl">
-            Get started <RightArrow height={8} width={14} />
-          </Button>
-
+          {authToken && userInfo ? 
+          <>
+            <Dropdown placement="bottom-start">
+              <DropdownTrigger>
+                <Avatar  //todo: use User component here
+                  icon={<AvatarIcon />}
+                  size="sm" // Adjust the size to your preference (e.g., xs, sm, md, lg, xl)
+                  classNames={{
+                    base: "bg-slate-300",
+                    icon: "text-white/70",
+                  }}
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="User Actions" variant="flat">
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-bold">Signed in as</p>
+                  <p className="font-bold">@{userInfo.username}</p>
+                </DropdownItem>
+                <DropdownItem key="profile">View Profile</DropdownItem>
+                <DropdownItem key="configurations">Saved Jobs</DropdownItem>
+                <DropdownItem key="settings">
+                  Settings
+                </DropdownItem>
+                <DropdownItem key="logout" color="danger">
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </>
+          :
+            <Button as={Link} href="/login" color="primary" variant="bordered" size="sm" className="text-xs font-semibold text-gray-600 px-4 border-slate-100 border hover:shadow-xl">
+              Get started <RightArrow height={8} width={14} />
+            </Button>
+          } 
+          
         </NavbarItem>
-      </NavbarContent>
+      </NavbarContent> 
+      :
+      <>
+      <Popover placement="bottom" showArrow={true}>
+        <PopoverTrigger>
+          <Button color="danger" size="sm" className="text-slate-500 bg-white border-1 border-slate-300 font-normal p-2 px-4" >
+            Finish Interview
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="px-1 py-2">
+            <div className="text-tiny">Interview still in progress.</div>
+            <div className="text-tiny">Are you sure to finish the interview?</div>
+            <div className="flex justify-end mt-2">
+              <Link href="/home" underline="none">
+                <button className="text-xs text-rose-500 font-semibold bg-none ">Finish Anyway</button>
+              </Link>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+        
+      </>
+    }
+    
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>

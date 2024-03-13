@@ -73,7 +73,7 @@ const InterviewPage = () => {
         setToken(storedAuthToken);
       } else {
         // Redirect to login if no authToken found
-        navigate('/');
+        navigate('/login');
         return;
       }
     }
@@ -91,7 +91,7 @@ const InterviewPage = () => {
         // Handle errors, such as redirecting on authorization failure
         console.error('Error fetching questions:', error);
       });
-  }, [authToken, setToken, navigate]);
+  }, [authToken,navigate, setToken]);
 
   const handleAnswerChange = (event) => {
     const updatedUserAnswers = [...userAnswers];
@@ -158,7 +158,7 @@ const InterviewPage = () => {
 
   return (
     <>
-      <NavBar />
+      <NavBar is_interview_page={true} />
       <div className="bg-gray-100 flex flex-col items-center justify-center" style={{ height: 'calc(100vh - 65px)' }}>
         <div className="bg-white m-3 p-2 lg:p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-11/12 lg:w-full flex flex-col">
           {!isRecording ?

@@ -73,9 +73,30 @@ login = async (req, res) => {
     }
   };
 
+const getUser = async (req, res) => {
+    try {
+      // Fetch user info based on the authenticated user
+      console.log(req);
+      const token = req.headers.authorization.split(' ')[1];
+      const { userId } = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf-8'));
+      const user = await User.findOne({ userId });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      // Extract username and send it in the response
+      const username = user.username;
+      res.json({ 'username': username });
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    res.status(500).json({ message: 'Error fetching user info' });
+  }
+
+}
+
 const AuthController = {
     register,
-    login
+    login,
+    getUser
 }
 
 module.exports = AuthController;
