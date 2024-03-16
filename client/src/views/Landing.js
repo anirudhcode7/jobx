@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 
-import NavBar from "../components/core/NavBar.js";
 import MainSection from '../components/landing/MainSection.js';
 import QuoteSection from '../components/landing/QuoteSection.js';
 import { useAuth } from '../context/AuthContext.js'
 export default function LandingPage() {
-  var { authToken, setToken, userInfo } = useAuth();
+  var { authToken, setToken } = useAuth();
 
   useEffect(() => {
     // If there is no authToken in the context, retrieve it from localStorage
@@ -18,14 +17,13 @@ export default function LandingPage() {
         return;
       }
     }
-  }, []);
+  }); // add dependency array for authToken and setToken if required
 
   return (
     <>
      <div className='main'>
           <div className='gradient' />
       </div>
-      <NavBar />
       <MainSection />
       {/* <QuoteSection /> */}
     </>

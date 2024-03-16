@@ -6,12 +6,9 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
-  const setToken = (token) => {
+  const setToken = async (token) => {
     setAuthToken(token);
     localStorage.setItem('authToken', token);
-    
-    // Fetch user information using the token and set it in state
-    fetchUserInfo(token);
   };
 
   const fetchUserInfo = async (token) => {
@@ -32,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, userInfo, setToken }}>
+    <AuthContext.Provider value={{ authToken, setToken, userInfo, fetchUserInfo }}>
       {children}
     </AuthContext.Provider>
   );

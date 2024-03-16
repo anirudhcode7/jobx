@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import your AuthContext
-import NavBar from '../components/core/NavBar';
 import { Grid, Col, Flex, Metric, Text } from "@tremor/react";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
@@ -16,37 +14,32 @@ const MAX_ATTEMPTS = process.env.REACT_APP_MAX_ATTEMPTS || 5;
 const Home = () => {
 
     const navigate = useNavigate();
-    const { authToken, userInfo, setToken } = useAuth(); // Get the authToken from your AuthContext
+    const { authToken } = useAuth(); // Get the authToken from your AuthContext
     const [remainingAttempts, setRemainingAttempts] = useState(MAX_ATTEMPTS);
     const [attempts, setAttempts] = useState(0);
+    const [showAttempts, setShowAttempts] = useState(false);
 
     useEffect(() => {
         // If there is no authToken in the context, retrieve it from localStorage
-        console.log("inside use effect")
-        if (!authToken) {
           const storedAuthToken = localStorage.getItem('authToken');
           if (storedAuthToken) {
-            setToken(storedAuthToken);
-          } else {
-            navigate('/login');
-            return;
-          }
-        }
-        // Fetch questions from the backend when the component mounts
-        const fetchData = async () => {
-            try {
-                const response = await fetchInterviewCounts(authToken);
+            // Fetch the current count of interviews for the user            
+            fetchInterviewCounts(storedAuthToken)
+            .then(response => {
+                // Assuming the response contains the count of interviews
                 const interviewCount = response.data.count;
                 setRemainingAttempts(MAX_ATTEMPTS - interviewCount);
                 setAttempts(interviewCount);
-            } catch (error) {
+                setShowAttempts(true);
+            })
+            .catch(error => {
                 console.error('Error fetching interview count:', error);
-                // Handle error, e.g., show an error message to the user
-            }
-        };
-
-        fetchData();
-
+            });
+          } 
+          else {
+            navigate('/login');
+            return;
+          }
     }, [authToken]);
 
     const handleClick = (e) => {
@@ -64,7 +57,6 @@ const Home = () => {
 
     return (
         <>
-            <NavBar />
             <div className="container mx-auto h-70vh flex flex-col justify-center p-10" style={{ height: "60%" }}>
                 <Grid numItems={2} numItemsSm={2} numItemsLg={3} className="flex gap-4 justify-start">
                     <Col numColSpan={2} numColSpanLg={3} className="w-80">
@@ -77,23 +69,20 @@ const Home = () => {
                                     <Flex className="gap-4 p-5 py-3 w-full">
                                         <div>
                                             <Text className="text-sm font-normal text-slate-500">Attempted</Text>
-                                            <Metric className="font-bold text-xl text-slate-600">{userInfo ? attempts: <>-</>}</Metric>
+                                            <Metric className="font-bold text-xl text-slate-600">{showAttempts ?attempts: <>-</>}</Metric>
                                         </div>
                                         <div>
                                             <Text className="text-sm font-normal text-slate-500">Attempts Left</Text>
-                                            <Metric className="font-bold text-lg text-slate-600">{userInfo ? remainingAttempts: <>-</>}</Metric>
+                                            <Metric className="font-bold text-lg text-slate-600">{showAttempts ?remainingAttempts:<>-</>}</Metric>
                                         </div>
                                     </Flex>
                                 </Card>
                                 <StartInterviewModal handleClick={handleClick} />
-
                             </CardBody>
                         </Card>
                     </Col>
                 </Grid>
             </div>
-
-
         </>
     );
 };

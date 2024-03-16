@@ -10,12 +10,13 @@ import Login from './views/Login';
 import InterviewPage from './views/Interview';
 import ThankYouPage from './views/ThankYouPage';
 import { NextUIProvider } from "@nextui-org/react";
-
+import Nav from './components/core/Nav'; 
 
 function App() {
   return (
     <AuthProvider>
       <NextUIProvider>
+        <Nav />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />

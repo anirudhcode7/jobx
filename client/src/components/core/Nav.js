@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import {Avatar, AvatarIcon} from "@nextui-org/react";
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarItem, Link, Button } from "@nextui-org/react";
@@ -24,14 +25,16 @@ export const ChevronDown = ({ fill, size, height, width, ...props }) => {
         strokeMiterlimit={10}
         strokeWidth={1.5}
       />
-    </svg>
+    </svg> 
   );
 };
 
-export default function NavBar({ is_interview_page }) {
+export default function Nav({ is_interview_page }) {
   console.log("is_interview_page", is_interview_page);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { authToken, userInfo } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showUser, setShowUser] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const { authToken, setToken, userInfo, fetchUserInfo } = useAuth();
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
   };
@@ -43,6 +46,25 @@ export default function NavBar({ is_interview_page }) {
     "Contact",
     "Log Out",
   ];
+
+  useEffect(() => {
+    // If there is no authToken in the context, retrieve it from localStorage
+    const storedAuthToken = localStorage.getItem('authToken');
+    console.log("inside nav use effect")
+    if (storedAuthToken) {
+      setToken(storedAuthToken);
+      fetchUserInfo(storedAuthToken);
+      console.log("inside nav use token effect");
+      setShowLogin(false);
+      setShowUser(true);
+    }
+    else {
+      console.log('no token');
+      setShowUser(false);
+      setShowLogin(true);
+        return;
+    }
+  }, [authToken]);
 
   return (
     <Navbar isBordered isBlurred shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className="border-y-stone-100 z-index-2 " >
@@ -135,40 +157,43 @@ export default function NavBar({ is_interview_page }) {
       <NavbarContent justify="end">
         <NavbarItem>
           {/* <MainBlueButton hrefLink="/" text="Get started" /> */}
-          {authToken && userInfo ? 
-          <>
-            <Dropdown placement="bottom-start">
-              <DropdownTrigger>
-                <Avatar  //todo: use User component here
-                  icon={<AvatarIcon />}
-                  size="sm" // Adjust the size to your preference (e.g., xs, sm, md, lg, xl)
-                  classNames={{
-                    base: "bg-slate-300",
-                    icon: "text-white/70",
-                  }}
-                />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="User Actions" variant="flat">
-                <DropdownItem key="profile" className="h-14 gap-2">
-                  <p className="font-bold">Signed in as</p>
-                  <p className="font-bold">@{userInfo.username}</p>
-                </DropdownItem>
-                <DropdownItem key="profile">View Profile</DropdownItem>
-                <DropdownItem key="configurations">Saved Jobs</DropdownItem>
-                <DropdownItem key="settings">
-                  Settings
-                </DropdownItem>
-                <DropdownItem key="logout" color="danger">
-                  Log Out
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </>
-          :
-            <Button as={Link} href="/login" color="primary" variant="bordered" size="sm" className="text-xs font-semibold text-gray-600 px-4 border-slate-100 border hover:shadow-xl">
-              Get started <RightArrow height={8} width={14} />
-            </Button>
-          } 
+          { showUser && userInfo ?
+              <>
+                <Dropdown placement="bottom-start">
+                  <DropdownTrigger>
+                    <Avatar  //todo: use User component here
+                      icon={<AvatarIcon />}
+                      size="sm" // Adjust the size to your preference (e.g., xs, sm, md, lg, xl)
+                      classNames={{
+                        base: "bg-slate-300",
+                        icon: "text-white/70",
+                      }}
+                    />
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="User Actions" variant="flat">
+                    <DropdownItem key="profile" className="h-14 gap-2">
+                      <p className="font-bold">Signed in as</p>
+                      <p className="font-bold">@{userInfo.username}</p>
+                    </DropdownItem>
+                    <DropdownItem key="profile">View Profile</DropdownItem>
+                    <DropdownItem key="configurations">Saved Jobs</DropdownItem>
+                    <DropdownItem key="settings">
+                      Settings
+                    </DropdownItem>
+                    <DropdownItem key="logout" color="danger">
+                      Log Out
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </>
+              :
+              <></>
+          }
+          { showLogin && 
+              <Button as={Link} href="/login" color="primary" variant="bordered" size="sm" className="text-xs font-semibold text-gray-600 px-4 border-slate-100 border hover:shadow-xl">
+                Get started <RightArrow height={8} width={14} />
+              </Button>
+          }
           
         </NavbarItem>
       </NavbarContent> 
