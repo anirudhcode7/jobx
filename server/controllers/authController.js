@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
 require('dotenv').config();
 
 
@@ -8,11 +10,14 @@ require('dotenv').config();
 register = async (req, res) => {
     try {
       // Retrieve user data from the request body
-      const { username, password } = req.body;
-
+      const { username, password, email } = req.body;
+      console.log('inside register')
       // Check if the username or password is missing
       if (!username || !password) {
         return res.status(400).json({ message: 'Username and password are required.' });
+      }
+      if(!email){
+        return res.status(400).json({ message: 'Email are required.' });
       }
 
       // Check if the username already exists in the database
@@ -23,7 +28,11 @@ register = async (req, res) => {
       }
 
       // Create a new user document and set the virtual 'password' field
-      const newUser = new User({ username, password });
+      const newUser = new User({ 
+        _id: new mongoose.Types.ObjectId(),
+        username, password, email });
+
+      console.log("new user", newUser);
 
       // Save the user document to the database
       await newUser.save();

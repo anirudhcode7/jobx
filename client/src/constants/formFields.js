@@ -8,7 +8,7 @@ const loginFields = [
         autoComplete: "username",
         isRequired: true,
         placeholder: "Username",
-        error: true,
+        error: false,
         errorMessage: "Username is required"
     },
     {
@@ -40,8 +40,8 @@ const signupFields = [
     },
     {
         labelText: "Email address",
-        labelFor: "email-address",
-        id: "email-address",
+        labelFor: "email",
+        id: "email",
         name: "email",
         type: "email",
         autoComplete: "email",

@@ -6,7 +6,6 @@ import useNotification from '../../services/useNotification';
 import { useNavigate } from 'react-router-dom';
 import { saveUserToDB } from '../../api/authApi';
 import InputField from '../Input';
-import { TextInput } from '@tremor/react';
 
 const fields = signupFields;
 let fieldsState = {};
@@ -92,7 +91,7 @@ export default function Signup() {
     
     if(is_valid){
       setIsSubmitting(true);
-      saveUserToDB(signUpState, showNotification, () => navigate('/'));
+      saveUserToDB(signUpState, showNotification, () => navigate('/login'));
     }
   }
 

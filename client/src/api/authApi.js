@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const API_URL = 'http://localhost:3004/api/auth';
-const API_URL = 'https://jobx-32a058281844.herokuapp.com/api/auth';
+const API_URL = 'http://localhost:3004/api/auth';
+// const API_URL = 'https://jobx-32a058281844.herokuapp.com/api/auth';
 
 export const authenticateUser = async (loginState, showNotification, setToken, onSuccess) => {
 
@@ -39,7 +39,7 @@ export const saveUserToDB = async (signUpState, showNotification, onSuccess) => 
       password: signUpState["password"],
       email: signUpState["email"],
     }
-
+    console.log("data", data)
     const response = await axios.post(`${API_URL}/register`, data);
     console.log("Status:", response.status);
     console.log("Response:", response.data);
@@ -50,7 +50,7 @@ export const saveUserToDB = async (signUpState, showNotification, onSuccess) => 
       onSuccess();
     }
   } catch (error) {
-    console.log('Registration failed');
+    console.log('Registration failed', error);
     if (error.response.status === 400) {
       console.log("Username is already in use.")
       showNotification('Username is already in use.', 'error');
