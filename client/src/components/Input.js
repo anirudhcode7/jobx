@@ -12,6 +12,8 @@ export default function InputField({
   name,
   type,
   isRequired = false,
+  error = false,
+  errorMessage,
   placeholder,
   customClass
 }) {
@@ -28,7 +30,12 @@ export default function InputField({
           required={isRequired}
           placeholder=""
           className="rounded-md tremor-brand-muted focus:outline-none focus:border-red-500"
+          // error={error}
+          // errorMessage={errorMessage}
         />
+        {error && 
+          <p className="my-1 text-xs text-rose-500 font-semibold">{errorMessage}</p>
+        } 
       </div>
     </>
   )

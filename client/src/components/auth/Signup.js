@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signupFields } from "../../constants/formFields";
 import FormAction from "../FormAction";
 import NotificationBanner from "../NotificationBanner";
@@ -14,6 +14,7 @@ fields.forEach(field => (fieldsState[field.id] = ''));
 
 export default function Signup() {
   const [signUpState, setSignUpState] = useState(fieldsState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const { notification, showNotification, closeNotification } = useNotification();
@@ -22,9 +23,77 @@ export default function Signup() {
     setSignUpState({ ...signUpState, [e.target.id]: e.target.value });
   }
 
-  const handleClick = async (e) => {
+
+  useEffect(() => { 
+    if(notification){
+      setIsSubmitting(false);
+    }
+
+  }, [notification]);
+  const handleSubmitSignUp = async (e) => {
     e.preventDefault();
-    saveUserToDB(signUpState, showNotification, () => navigate('/'));
+    var is_valid = true;
+
+    // Create a new object to store the updated sign up state
+    let updatedSignUpState = { ...signUpState };
+
+    var password = "";
+    // validating input fields
+    for (const field of fields) {
+      console.log('print fields', field.name);
+
+       // removing existing error message
+       field.error = false;
+      // updatedSignUpState[field.id + "Error"] = false;
+
+      //checking if value exists or not
+      console.log("sign up state", signUpState[field.id])
+      if(!signUpState[field.id]){
+        field.error = true;
+        field.errorMessage = `${field.labelText} is required`;
+        //updatedSignUpState[field.id + "Error"] = true;
+        //updatedSignUpState[field.id + "ErrorMessage"] = `${field.labelText} is required`;
+        is_valid = false;
+      }
+      else{
+        // validate if its a proper username
+        if (field.name === "username" && !/^[a-z0-9_]+$/.test(signUpState[field.id].trim())) {
+          field.error = true;
+          field.errorMessage = "Username can only contain lowercase letters, numbers, and underscores";
+          is_valid = false;
+        }
+        else if (field.name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signUpState[field.id].trim())) {
+          field.error = true;
+          field.errorMessage = "Invalid email format";
+          is_valid = false;
+        } 
+        else if (field.name === "password") {
+          password = signUpState[field.id];
+          if(signUpState[field.id].length < 8) {
+            field.error = true;
+            field.errorMessage = "Password must be at least 8 characters long";
+            is_valid = false;
+          }
+          else if (/\s/.test(signUpState[field.id]) || signUpState[field.id].includes(',')){
+            field.error = true;
+            field.errorMessage = "Password should not contain white spaces and commas";
+            is_valid = false;
+          }
+        }
+        else if (field.name === "confirm_password" && signUpState[field.id] !== password) {
+          field.error = true;
+          field.errorMessage = "Passwords do not match";
+          is_valid = false;
+        }
+      }
+      // Update the sign up state with the new error states
+      setSignUpState(updatedSignUpState);
+    }
+    
+    if(is_valid){
+      setIsSubmitting(true);
+      saveUserToDB(signUpState, showNotification, () => navigate('/'));
+    }
   }
 
   return (
@@ -54,13 +123,15 @@ export default function Signup() {
                   type={field.type}
                   isRequired={field.isRequired}
                   placeholder={field.placeholder}
+                  error={field.error}
+                  errorMessage={field.errorMessage}
                 />
 
               )
             }
           </div>
 
-          <FormAction handleClick={handleClick} text="Sign Up" />
+          <FormAction handleClick={handleSubmitSignUp} text="Sign Up" loading={isSubmitting}/>
           <p className="mt-4 text-sm text-gray-600 text-center">
             Already a user? <a href="/login" className="text-blue-700 font-semibold">Sign In</a>
           </p>
