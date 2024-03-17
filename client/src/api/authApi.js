@@ -37,6 +37,7 @@ export const saveUserToDB = async (signUpState, showNotification, onSuccess) => 
     var data = {
       username: signUpState["username"],
       password: signUpState["password"],
+      email: signUpState["email"],
     }
 
     const response = await axios.post(`${API_URL}/register`, data);

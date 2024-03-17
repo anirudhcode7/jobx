@@ -20,7 +20,6 @@ export default function InputField({
       <div className="mb-3">
         <label htmlFor={labelFor} className="block text-sm mb-1 font-semibold text-gray-600">{labelText}</label>
         <TextInput
-
           onChange={handleChange}
           value={value}
           id={id}

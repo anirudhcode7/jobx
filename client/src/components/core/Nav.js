@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {Avatar, AvatarIcon} from "@nextui-org/react";
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarItem, Link, Button } from "@nextui-org/react";
-import { Popover, PopoverTrigger, PopoverContent, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from "@nextui-org/react"
+import { Popover, PopoverTrigger, PopoverContent, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Divider } from "@nextui-org/react"
 import RightArrow from '../icons/RightArrow';
 import { useAuth } from '../../context/AuthContext';
 
@@ -29,8 +29,8 @@ export const ChevronDown = ({ fill, size, height, width, ...props }) => {
   );
 };
 
-export default function Nav({ is_interview_page }) {
-  console.log("is_interview_page", is_interview_page);
+export default function Nav({ isInterviewPage, isLandingPage=false }) {
+  console.log("isInterviewPage", isInterviewPage);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -38,6 +38,7 @@ export default function Nav({ is_interview_page }) {
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
   };
+  const backgroundType = isLandingPage ? 'bg-transparent' : '';
   const menuItems = [
     "Home",
     "Features",
@@ -67,20 +68,20 @@ export default function Nav({ is_interview_page }) {
   }, [authToken]);
 
   return (
-    <Navbar isBordered isBlurred shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className="border-y-stone-100 z-index-2 " >
+    <Navbar isBordered isBlurred shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className={`border-y-stone-100 z-index-2 ${backgroundType}`} >
       <NavbarContent >
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
         <NavbarBrand >
-        <Link href={is_interview_page ? undefined : "/"} underline="none"><p color="foreground" className="font-extrabold text-transparent bg-clip-text bg-gradient-to-t from-blue-500 to-indigo-600">JOBX</p></Link>
+        <Link href={isInterviewPage ? undefined : "/"} underline="none"><p color="foreground" className="font-extrabold text-transparent bg-clip-text bg-gradient-to-t from-blue-500 to-indigo-600">JOBX</p></Link>
         </NavbarBrand>
       </NavbarContent>
 
 
-    {!is_interview_page && 
-      <NavbarContent className="hidden sm:flex gap-5" justify="right">
+    {!isInterviewPage && 
+      <NavbarContent className="hidden sm:flex gap-5 max-w-xl" justify="center">
         <NavbarItem  > {/* /isActive */}
           <Link color="foreground" href="/home" className="text-sm font-semibold subpixel-antialiased">
             Home
@@ -153,8 +154,8 @@ export default function Nav({ is_interview_page }) {
         </NavbarItem>
       </NavbarContent>
     }
-    {!is_interview_page ? 
-      <NavbarContent justify="end">
+    {!isInterviewPage ? 
+      <NavbarContent className="w-auto max-w-md" justify="end">
         <NavbarItem>
           {/* <MainBlueButton hrefLink="/" text="Get started" /> */}
           { showUser && userInfo ?
@@ -162,7 +163,9 @@ export default function Nav({ is_interview_page }) {
                 <Dropdown placement="bottom-start">
                   <DropdownTrigger>
                     <Avatar  //todo: use User component here
-                      icon={<AvatarIcon />}
+                      showFallback
+                      //name={userInfo.username} 
+                      src='' // put user image url here
                       size="sm" // Adjust the size to your preference (e.g., xs, sm, md, lg, xl)
                       classNames={{
                         base: "bg-slate-300",
@@ -172,17 +175,15 @@ export default function Nav({ is_interview_page }) {
                   </DropdownTrigger>
                   <DropdownMenu aria-label="User Actions" variant="flat">
                     <DropdownItem key="profile" className="h-14 gap-2">
-                      <p className="font-bold">Signed in as</p>
-                      <p className="font-bold">@{userInfo.username}</p>
+                      <p className="font-semibold">{userInfo.username}</p>
+                      <p className="font-semibold">{userInfo.email}</p>
+                      <Divider orientation="vertical" />
                     </DropdownItem>
-                    <DropdownItem key="profile">View Profile</DropdownItem>
+                    
+                    <DropdownItem key="profile">My Profile</DropdownItem>
                     <DropdownItem key="configurations">Saved Jobs</DropdownItem>
-                    <DropdownItem key="settings">
-                      Settings
-                    </DropdownItem>
-                    <DropdownItem key="logout" color="danger">
-                      Log Out
-                    </DropdownItem>
+                    <DropdownItem key="settings">Settings</DropdownItem>
+                    <DropdownItem key="logout" color="danger">Log Out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </>

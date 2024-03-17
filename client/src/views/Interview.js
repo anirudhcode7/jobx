@@ -3,7 +3,7 @@ import { fetchQuestions, submitInterview, evaluateInterview } from '../api/inter
 import QuestionDisplay from '../components/interview/QuestionDisplay';
 import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
 import SubmitIntervieModal from '../components/interview/SubmitInterviewModal';
-
+import Nav from '../components/core/Nav';
 
 // import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
@@ -157,6 +157,7 @@ const InterviewPage = () => {
 
   return (
     <>
+      <Nav isInterviewPage={true} />
       <div className="bg-gray-100 flex flex-col items-center justify-center" style={{ height: 'calc(100vh - 65px)' }}>
         <div className="bg-white m-3 p-2 lg:p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-11/12 lg:w-full flex flex-col">
           {!isRecording ?

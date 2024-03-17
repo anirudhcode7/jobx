@@ -6,6 +6,7 @@ import useNotification from '../../services/useNotification';
 import { useNavigate } from 'react-router-dom';
 import { saveUserToDB } from '../../api/authApi';
 import InputField from '../Input';
+import { TextInput } from '@tremor/react';
 
 const fields = signupFields;
 let fieldsState = {};
