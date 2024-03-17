@@ -1,7 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import {Avatar, AvatarIcon} from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
 
+
+import {Avatar, AvatarIcon} from "@nextui-org/react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarItem, Link, Button } from "@nextui-org/react";
 import { Popover, PopoverTrigger, PopoverContent, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Divider } from "@nextui-org/react"
 import RightArrow from '../icons/RightArrow';
@@ -30,7 +32,8 @@ export const ChevronDown = ({ fill, size, height, width, ...props }) => {
 };
 
 export default function Nav({ isInterviewPage, isLandingPage=false }) {
-  console.log("isInterviewPage", isInterviewPage);
+
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUser, setShowUser] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -48,6 +51,12 @@ export default function Nav({ isInterviewPage, isLandingPage=false }) {
     "Log Out",
   ];
 
+  // Function to handle logout
+  const handleLogout = () => { 
+    // removing the token from the local storage
+    localStorage.removeItem('authToken');
+    navigate('/');
+  }
   useEffect(() => {
     // If there is no authToken in the context, retrieve it from localStorage
     const storedAuthToken = localStorage.getItem('authToken');
@@ -183,7 +192,7 @@ export default function Nav({ isInterviewPage, isLandingPage=false }) {
                     <DropdownItem key="profile">My Profile</DropdownItem>
                     <DropdownItem key="configurations">Saved Jobs</DropdownItem>
                     <DropdownItem key="settings">Settings</DropdownItem>
-                    <DropdownItem key="logout" color="danger">Log Out</DropdownItem>
+                    <DropdownItem key="logout" color="danger" onClick={handleLogout}>Log Out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </>
