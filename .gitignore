@@ -32,3 +32,8 @@ Thumbs.db
 .env.test
 .env.production
 
+
+# python Virtual Environment
+job_search_automation/venv/
+```
+
