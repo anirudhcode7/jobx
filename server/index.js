@@ -15,12 +15,16 @@ const db = require("./config/db"); // Import the database connection
 
 const authRoutes = require("./routes/auth"); // Import your authentication routes
 const interviewRoutes = require("./routes/interview");
+const jobRoutes = require("./routes/job");
 
 // Use your authentication routes
 app.use("/api/auth", authRoutes);
 
 // Use interview routes
 app.use("/api/interview", interviewRoutes);
+
+// Use job routes
+app.use("/api", jobRoutes);
 
 // Define and use other routes here
 

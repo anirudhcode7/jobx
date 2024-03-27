@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-//const API_URL = 'http://localhost:3004/api/auth';
-require("dotenv").config();
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
-const API_URL = `${BACKEND_URL}/api/auth`;
+const API_URL = 'http://localhost:3004/api/auth';
+// const BACKEND_URL = 'https://jobx-32a058281844.herokuapp.com';
+// const API_URL = `${BACKEND_URL}/api/auth`;
 
 export const authenticateUser = async (loginState, showNotification, setToken, onSuccess) => {
 

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-require("dotenv").config();
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004';
-const API_URL = `${BACKEND_URL}/api/interview`;
+const API_URL = 'http://localhost:3004/api/interview';
+// const BACKEND_URL = 'https://jobx-32a058281844.herokuapp.com';
+// const API_URL = `${BACKEND_URL}/api/interview`;
 
 export const fetchQuestions = (authToken) => {
   return axios.get(`${API_URL}/questions`, {
