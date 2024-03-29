@@ -234,7 +234,7 @@ const InterviewPage = () => {
           {isRecording && (
             <div className="mt-4 relative flex justify-center items-center">
               <div className="transribe_shadow rounded-xl ">
-                <div class="w-full rounded-xl text-slate-500 bg-slate-50 p-2 px-4 text-xs font-medium">
+                <div className="w-full rounded-xl text-slate-500 bg-slate-50 p-2 px-4 text-xs font-medium">
                   {" "}
                   <FontAwesomeIcon icon={faWaveSquare} size="sm" /> transcribing
                   your answer ...
