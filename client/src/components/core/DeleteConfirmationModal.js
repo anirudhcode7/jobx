@@ -1,61 +1,57 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Input,
-  Textarea,
-  RadioGroup,
-  Radio,
   Button,
 } from "@nextui-org/react";
 
-export default function DeleteConfirmationModal({
+export default function DeleteConfirmationModel({
   isOpen,
+  onOpen,
   onClose,
-  onDelete,
-  itemName,
+  handleDelete,
 }) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const handleDelete = () => {
-    onDelete();
-    onClose();
-  };
-
   return (
-    <Modal
-      closeButton
-      aria-labelledby="delete-modal-title"
-      open={isOpen}
-      onClose={onClose}
-    >
-      <Modal.Header>
-        <Modal.Title id="delete-modal-title" size={18}>
-          Delete {itemName}?
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>
-          Are you sure you want to delete this {itemName}? This action cannot be
-          undone.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button auto flat color="error" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          auto
-          color="error"
-          onClick={handleDelete}
-          disabled={!confirmDelete}
-        >
-          Delete
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onOpen={onOpen}
+        size="xl"
+        className=""
+        hideCloseButton
+      >
+        <ModalContent className="flex justify-center items-center">
+          <div className="w-[30rem]">
+            <ModalHeader className="pb-0 text-center">
+              <p className="text-slate-600">
+                Are you sure you want to delete the job posting?
+              </p>
+            </ModalHeader>
+            <ModalFooter className="flex justify-between">
+              <Button
+                color="primary"
+                size="sm"
+                variant="bordered"
+                onClick={onClose}
+                className="text-sm px-5 text-blue-600 rounded-md font-medium mt-2 border-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                color="primary"
+                size="sm"
+                onClick={handleDelete}
+                className="text-sm rounded-md font-medium mt-2 bg-red-600"
+              >
+                Delete
+              </Button>
+            </ModalFooter>
+          </div>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

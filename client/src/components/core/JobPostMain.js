@@ -1,5 +1,7 @@
 import { Button } from "@nextui-org/react";
 import { Locate, Luggage, Crown, Trash2, Pencil } from "lucide-react";
+import { useDisclosure } from "@nextui-org/react";
+import DeleteConfirmationModel from "./DeleteConfirmationModal";
 
 const SkillTag = ({ skill }) => {
   return (
@@ -24,6 +26,13 @@ export default function JobPostMain({
   handleDelete,
   handleEdit
 }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const confirmDelete = () => {
+    handleDelete(id);
+    onClose();
+  };
+
   return (
     <>
       <div className="relative bg-gray-100 shadow-md rounded-3xl p-6 my-5">
@@ -31,7 +40,7 @@ export default function JobPostMain({
         <div className="absolute top-2 right-2">
           <Trash2
             className="text-red-500 cursor-pointer"
-            onClick={() => handleDelete(id)}
+            onClick={onOpen}
           />
         </div>
         <div className="absolute top-2 right-10">
@@ -136,6 +145,11 @@ export default function JobPostMain({
           </div>
         </div>
       </div>
+      <DeleteConfirmationModel
+        isOpen={isOpen}
+        onClose={onClose}
+        handleDelete={confirmDelete}
+      />
     </>
   );
 }
