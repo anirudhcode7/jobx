@@ -4,9 +4,9 @@ import { Sidebar, SidebarItem } from "../components/core/Sidebar";
 import { useState } from "react";
 import {
   ConfigurationsMain,
-  JobsMain,
   InterviewQuestionsMain,
 } from "../components/core/SidebarMainArea";
+import JobsMain from "../components/core/JobsMain";
 
 export default function AdminPage() {
   const [activeSection, setActiveSection] = useState("Configurations");

@@ -3,7 +3,6 @@ import {
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   Button,
 } from "@nextui-org/react";
@@ -30,7 +29,7 @@ export default function DeleteConfirmationModel({
                 Are you sure you want to delete the job posting?
               </p>
             </ModalHeader>
-            <ModalFooter className="flex justify-between">
+            <ModalFooter className="flex">
               <Button
                 color="primary"
                 size="sm"

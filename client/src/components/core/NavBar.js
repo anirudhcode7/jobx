@@ -150,7 +150,7 @@ export default function NavBar() {
         <NavbarItem>
           <Link
             color="foreground"
-            href="#"
+            href="/jobs"
             aria-current="page"
             className="text-sm font-semibold subpixel-antialiased"
           >

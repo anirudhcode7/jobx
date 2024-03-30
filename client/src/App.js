@@ -11,6 +11,7 @@ import Login from './views/Login';
 import InterviewPage from './views/Interview';
 import ThankYouPage from './views/ThankYouPage';
 import { NextUIProvider } from "@nextui-org/react";
+import Jobs from './views/Jobs';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/jobs" element={<Jobs/>} />
             {/* <Route path="/login" element={<Demo />} /> */}
             <Route path="/home" element={<Home />} />
             <Route path="/interview" element={<InterviewPage />} />
