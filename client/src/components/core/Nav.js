@@ -185,7 +185,7 @@ export default function Nav({ isInterviewPage, isLandingPage=false }) {
                   <DropdownMenu aria-label="User Actions" variant="flat">
                     <DropdownItem key="profile" className="h-14 gap-2">
                       <p className="font-semibold">{userInfo.username}</p>
-                      <p className="font-semibold">{userInfo.email}</p>
+                      <p className="font-normal">{userInfo.email}</p>
                       <Divider orientation="vertical" />
                     </DropdownItem>
                     
