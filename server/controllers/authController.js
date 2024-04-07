@@ -72,7 +72,7 @@ login = async(req, res) => {
         if (user.authenticate(password)) {
             // Password is correct, generate a JWT token
             const secretKey = process.env.JWT_TOKEN_SECRET_KEY
-            const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user._id, role: user.role }, secretKey, { expiresIn: '1h' });
             console.log("Authenticated new user")
                 // Send the token in the response
             res.json({ token });
@@ -88,7 +88,6 @@ login = async(req, res) => {
 const getUser = async(req, res) => {
     try {
         // Fetch user info based on the authenticated user
-        console.log(req);
         const userId = req.user.id;
 
         const user = await User.findById(userId);
