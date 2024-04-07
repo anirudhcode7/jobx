@@ -11,6 +11,8 @@ export default function JobsMain() {
   const [jobData, setJobData] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
+  const { userInfo } = useAuth();
+  console.log("userInfo: ", userInfo);
 
   useEffect(() => {
     // Fetch jobs from the backend when the component mounts
@@ -49,9 +51,9 @@ export default function JobsMain() {
     }
   };
 
-  const handleUpdateJob = async (id, updatedJobData) => {
+  const handleUpdateJob = async (updatedJobData) => {
     try {
-      await updateJob(authToken, id, updatedJobData); // Pass authToken to updateJob function
+      await updateJob(authToken, jobData._id.toString(), updatedJobData); // Pass authToken to updateJob function
       fetchJobsFromApi();
     } catch (error) {
       console.error("Error updating job:", error);
@@ -79,15 +81,17 @@ export default function JobsMain() {
     <>
       <div className="p-6">
         <h1 className="text-xl font-bold text-black mb-4">All Jobs</h1>
-        <Button
-          onPress={onOpen}
-          className="ml-auto text-white bg-indigo-800"
-          size="lg"
-          radius="full"
-          variant="bordered"
-        >
-          Add Job
-        </Button>
+        {userInfo?.role === "admin" && (
+          <Button
+            onPress={onOpen}
+            className="ml-auto text-white bg-indigo-800"
+            size="lg"
+            radius="full"
+            variant="bordered"
+          >
+            Add Job
+          </Button>
+        )}
 
         <AddJobModal
           isOpen={isOpen}
@@ -113,8 +117,8 @@ export default function JobsMain() {
               employmentType={job.employment_type}
               yearsOfExperience={job.experience_required}
               skills={job.skills_required}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
+              handleDelete={userInfo?.role === "admin" ? handleDelete : null}
+              handleEdit={userInfo?.role === "admin" ? handleEdit : null}
             />
           ))
         )}
