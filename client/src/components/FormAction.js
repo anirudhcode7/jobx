@@ -1,5 +1,6 @@
 import React from "react";
 import { MainBlueButtonCss } from "./utils/buttons/MainBlueButton";
+import {Button} from "@nextui-org/react";
 
 export default function FormAction({
     handleClick,
@@ -8,20 +9,22 @@ export default function FormAction({
     padding = '10px 5px',
     fontWeight = 'bold',
     fontSize = '0.85rem',
-    text
+    text,
+    loading=false
 }) {
     return (
         <>
             {
                 type === 'Button' ?
-                    <button
+                    <Button
                         type={action}
                         className={MainBlueButtonCss}
                         style={{ width: '100%', padding: padding, fontWeight: fontWeight, margin: '0', justifyContent: 'center', fontSize: fontSize, letterSpacing: '0.8px' }}
                         onClick={handleClick}
+                        isLoading={loading}
                     >
                         {text}
-                    </button>
+                    </Button>
                     :
                     <></>
             }

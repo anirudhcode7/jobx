@@ -58,6 +58,8 @@ export default function Login() {
                                     type={field.type}
                                     isRequired={field.isRequired}
                                     placeholder={field.placeholder}
+                                    error={field.error}
+                                    errorMessage={field.errorMessage}
                                 />
 
                             )

@@ -1,10 +1,10 @@
 import Signup from "../components/auth/Signup"
-import NavBar from "../components/core/NavBar"
+import Nav from "../components/core/Nav"
 
 export default function SignupPage() {
     return (
-        <>
-            <NavBar />
+        <>  
+            <Nav />
             <Signup />
         </>
     )

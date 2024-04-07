@@ -5,7 +5,7 @@ import MainBlueButton from '../utils/buttons/MainBlueButton';
 import backgroundImage from '../../images/background2.png';
 
 export default function MainSection() {
-
+   // backgroundImage: `url(${backgroundImage})`, backgroundSize: 'calc(35% + 12rem)', backgroundPosition: 'center',
     return (
         <>
             <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'calc(35% + 12rem)', backgroundPosition: 'center', height: '80vh' }} className="relative flex w-full h-70vh bg-cover bg-center bg-no-repeat overflow-hidden justify-center items-center">
@@ -18,7 +18,7 @@ export default function MainSection() {
                     &nbsp; is here!
                 </h1>
                     <div className="flex flex-row">
-                        <MainBlueButton hrefLink="/login" text="Get Started" />
+                        <MainBlueButton hrefLink="/home" text="Get Started" />
                         <Button variant="bordered" color="primary" className="hidden md:block px-11 rounded border-blue-500 text-sm font-semibold text-blue-600 border">View Jobs</Button>
                     </div>
                 </div>
