@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import your AuthContext
-import NavBar from "../components/core/NavBar";
 import { Grid, Col, Flex, Metric, Text } from "@tremor/react";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 

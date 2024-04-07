@@ -1,11 +1,11 @@
 import JobsMain from "../components/core/JobsMain";
-import NavBar from "../components/core/NavBar";
+import Nav from "../components/core/Nav";
 
 
 export default function Jobs() {
     return (
         <>
-            <NavBar />
+            <Nav />
             <JobsMain />
         </>
     );

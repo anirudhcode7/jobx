@@ -1,4 +1,4 @@
-import NavBar from "../components/core/NavBar";
+import Nav from "../components/core/Nav";
 import { Settings2, SearchX, CookieIcon } from "lucide-react";
 import { Sidebar, SidebarItem } from "../components/core/Sidebar";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export default function AdminPage() {
   const [activeSection, setActiveSection] = useState("Configurations");
   return (
     <>
-      <NavBar />
+      <Nav />
       <div className="flex">
         <Sidebar>
           <SidebarItem
@@ -43,7 +43,7 @@ export default function AdminPage() {
         </main> 
       </div>
 
-      {/* <NavBar />
+      {/* <Nav />
       <div className="flex justify-center items-center h-screen">
         <Switch size="lg">
             ChatGPT Evaluation
