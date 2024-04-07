@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 
-const API_URL = 'https://jobx-32a058281844.herokuapp.com/api/auth';
+const API_URL = 'http://localhost:3004/api/auth';
+// const API_URL = 'https://jobx-32a058281844.herokuapp.com/api/auth';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

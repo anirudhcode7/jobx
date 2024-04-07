@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import your AuthContext
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Import your AuthContext
 import { Grid, Col, Flex, Metric, Text } from "@tremor/react";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
@@ -44,18 +44,18 @@ const Home = () => {
           }
     }, [authToken]);
 
-    const handleClick = (e) => {
-        e.preventDefault();
+  const handleClick = (e) => {
+    e.preventDefault();
 
-        // Check if the user has remaining attempts
-        if (remainingAttempts <= 0) {
-            alert("You have reached the maximum number of interview attempts.");
-            return;
-        }
+    // Check if the user has remaining attempts
+    if (remainingAttempts <= 0) {
+      alert("You have reached the maximum number of interview attempts.");
+      return;
+    }
 
-        console.log('Interview Started');
-        navigate('/interview');
-    };
+    console.log("Interview Started");
+    navigate("/interview");
+  };
 
     return (    
         <>
