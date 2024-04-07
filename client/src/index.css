@@ -60,14 +60,14 @@ code {
   background-image: radial-gradient(
       at 27% 37%,
       hsla(215, 98%, 61%, 1) 0px,
-      transparent 0%
+      transparent 30%
     ),
-    radial-gradient(at 79% 53%, rgb(255, 129, 228) 0px, transparent 50%),
+    radial-gradient(at 79% 43%, rgb(238, 35, 241) 0px, transparent 40%),
     /* radial-gradient(at 52% 99%, rgb(233, 140, 188) 0px, transparent 50%), */
-    radial-gradient(at 10% 29%, rgb(122, 81, 245) 0px, transparent 50%),
-    radial-gradient(at 97% 96%, rgb(129, 208, 253) 0px, transparent 50%),
-    radial-gradient(at 33% 50%, rgb(152, 93, 202) 0px, transparent 50%),
-    radial-gradient(at 97% 21%, rgb(130, 76, 255) 0px, transparent 50%);
+    radial-gradient(at 40% 43%, rgb(102, 51, 255) 100px, transparent 70%),
+    radial-gradient(at 47% 66%, rgb(113, 195, 236) 10px, transparent 80%),
+    radial-gradient(at 43% 50%, rgb(152, 93, 202) 0px, transparent 50%),
+    radial-gradient(at 87% 31%, rgb(130, 76, 255) 0px, transparent 50%);
   position: absolute;
   content: "";
   width: 100%;

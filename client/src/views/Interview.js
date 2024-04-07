@@ -3,13 +3,12 @@ import { fetchQuestions, submitInterview, evaluateInterview } from '../api/inter
 import QuestionDisplay from '../components/interview/QuestionDisplay';
 import QuestionCategoryModal from '../components/interview/QuestionTypeModal';
 import SubmitIntervieModal from '../components/interview/SubmitInterviewModal';
-
+import Nav from '../components/core/Nav';
 
 // import TextInputWithMic from '../components/interview/TextInputWithMic';
 import SpeechToText from '../components/SpeechToText';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/core/NavBar';
 import { Flex } from "@tremor/react";
 import { Chip, Button, Tooltip, useDisclosure } from "@nextui-org/react";
 
@@ -66,32 +65,32 @@ const InterviewPage = () => {
 
 
   useEffect(() => {
+    console.log('inside useeffect interview')
     // If there is no authToken in the context, retrieve it from localStorage
-    if (!authToken) {
       const storedAuthToken = localStorage.getItem('authToken');
       if (storedAuthToken) {
         setToken(storedAuthToken);
+
+        // Fetch questions from the backend when the component mounts
+        fetchQuestions(storedAuthToken)
+        .then(response => {
+          const questionsResponse = response.data.Questions;
+
+          setQuestions(questionsResponse);
+          setUserAnswers(Array(questionsResponse.length).fill(''));
+          console.log(response.data);
+        })
+        .catch(error => {
+          // Handle errors, such as redirecting on authorization failure
+          console.error('Error fetching questions:', error);
+          navigate('/login');
+        });
       } else {
         // Redirect to login if no authToken found
-        navigate('/');
+        navigate('/login');
         return;
-      }
-    }
-
-    // Fetch questions from the backend when the component mounts
-    fetchQuestions(authToken)
-      .then(response => {
-        const questionsResponse = response.data.Questions;
-
-        setQuestions(questionsResponse);
-        setUserAnswers(Array(questionsResponse.length).fill(''));
-        console.log(response.data);
-      })
-      .catch(error => {
-        // Handle errors, such as redirecting on authorization failure
-        console.error('Error fetching questions:', error);
-      });
-  }, [authToken, setToken, navigate]);
+      }   
+  }, []);
 
   const handleAnswerChange = (event) => {
     const updatedUserAnswers = [...userAnswers];
@@ -158,7 +157,7 @@ const InterviewPage = () => {
 
   return (
     <>
-      <NavBar />
+      <Nav isInterviewPage={true} />
       <div className="bg-gray-100 flex flex-col items-center justify-center" style={{ height: 'calc(100vh - 65px)' }}>
         <div className="bg-white m-3 p-2 lg:p-4 rounded-xl shadow-xl border-1 border-slate-50 max-w-4xl w-11/12 lg:w-full flex flex-col">
           {!isRecording ?

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import Demo from './components/auth/ReactLogin';
@@ -10,7 +10,6 @@ import Login from './views/Login';
 import InterviewPage from './views/Interview';
 import ThankYouPage from './views/ThankYouPage';
 import { NextUIProvider } from "@nextui-org/react";
-
 
 function App() {
   return (

@@ -2,10 +2,17 @@ const mongoose = require('mongoose');
 const crypto = require('crypto'); // For generating the salt and hashing the password
 
 const userSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId, // Define _id as ObjectId type
   username: {
     type: String,
     required: true,
     unique: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: false,
     trim: true,
   },
   hashed_password: {

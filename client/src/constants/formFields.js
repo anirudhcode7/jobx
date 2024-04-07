@@ -7,7 +7,9 @@ const loginFields = [
         type: "text",
         autoComplete: "username",
         isRequired: true,
-        placeholder: "Username"
+        placeholder: "Username",
+        error: false,
+        errorMessage: "Username is required"
     },
     {
         labelText: "Password",
@@ -17,7 +19,9 @@ const loginFields = [
         type: "password",
         autoComplete: "current-password",
         isRequired: true,
-        placeholder: "Password"
+        placeholder: "Password",
+        error: false,
+        errorMessage: "Password is required"
     }
 ]
 
@@ -30,17 +34,21 @@ const signupFields = [
         type: "text",
         autoComplete: "username",
         isRequired: true,
-        placeholder: "Username"
+        placeholder: "Username",
+        error: false,
+        errorMessage: "Username is required"
     },
     {
         labelText: "Email address",
-        labelFor: "email-address",
-        id: "email-address",
+        labelFor: "email",
+        id: "email",
         name: "email",
         type: "email",
         autoComplete: "email",
         isRequired: true,
-        placeholder: "Email address"
+        placeholder: "Email address",
+        error: false,
+        errorMessage: "Email is required"
     },
     {
         labelText: "Password",
@@ -50,17 +58,21 @@ const signupFields = [
         type: "password",
         autoComplete: "current-password",
         isRequired: true,
-        placeholder: "Password"
+        placeholder: "Password",
+        error: false,
+        errorMessage: "Password is required"
     },
     {
         labelText: "Confirm Password",
-        labelFor: "confirm-password",
-        id: "confirm-password",
-        name: "confirm-password",
+        labelFor: "confirm_password",
+        id: "confirm_password",
+        name: "confirm_password",
         type: "password",
-        autoComplete: "confirm-password",
+        autoComplete: "confirm_password",
         isRequired: true,
-        placeholder: "Confirm Password"
+        placeholder: "Confirm Password",
+        error: false,
+        errorMessage: "Password is required"
     }
 ]
 
