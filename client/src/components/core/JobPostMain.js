@@ -154,6 +154,7 @@ export default function JobPostMain({
         isOpen={isOpen}
         onClose={onClose}
         handleDelete={confirmDelete}
+        subject={"job posting"}
       />
     </>
   );

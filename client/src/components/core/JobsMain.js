@@ -104,7 +104,7 @@ export default function JobsMain() {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          jobs.map((job, index) => (
+          jobs.slice(0).reverse().map((job, index) => (
             <JobPostMain
               key={index}
               id={job._id.toString()}
