@@ -17,7 +17,7 @@ const createJob = async (req, res) => {
     // If the job does not already exist, create a new job posting
     const newJob = new Job(req.body);
     await newJob.save();
-    console.log("New Job Added Successfully")
+    console.log("New Job Added Successfully");
 
     res.status(201).json({ message: "Job posting created successfully." });
   } catch (error) {
@@ -61,7 +61,11 @@ const getJobById = async (req, res) => {
 const updateJobById = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedJob = await Job.findByIdAndUpdate(id, req.body, { new: true });
+    const updatedJob = await Job.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true }
+    );
     if (!updatedJob) {
       return res.status(404).json({ message: "Job posting not found." });
     }
@@ -82,7 +86,7 @@ const deleteJobById = async (req, res) => {
     if (!deletedJob) {
       return res.status(404).json({ message: "Job posting not found." });
     }
-    console.log("Deleted Job successfully")
+    console.log("Deleted Job successfully");
     res.json({ message: "Job posting deleted successfully." });
   } catch (error) {
     console.error(error);
