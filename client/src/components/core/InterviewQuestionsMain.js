@@ -9,14 +9,16 @@ export default function InterviewQuestionsMain() {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [questionData, setQuestionData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
   const { userInfo } = useAuth();
 
   useEffect(() => {
-    // Fetch questions from the backend when the component mounts
+    // Fetch questions from the backend when the component mounts or when currentPage changes
     fetchQuestionsFromApi();
-  }, [authToken]);
+  }, [authToken, currentPage]);
 
   useEffect(() => {
     if (questionData) {
@@ -32,12 +34,14 @@ export default function InterviewQuestionsMain() {
 
   const fetchQuestionsFromApi = async () => {
     try {
-      const data = await fetchInterviewQuestions(authToken); // Pass authToken to fetchQuestions function
-      setQuestions(data);
-      setLoading(false);
+      setLoading(true); // Set loading state to true before making a request
+      const response = await fetchInterviewQuestions(authToken, currentPage); // Pass authToken and currentPage to fetchInterviewQuestions function
+      setQuestions(response.questions);
+      setTotalPages(response.totalPages);
     } catch (error) {
       console.error("Error fetching questions:", error);
-      setLoading(false);
+    } finally {
+      setLoading(false); // Set loading state to false after the request is completed
     }
   };
 
@@ -76,6 +80,15 @@ export default function InterviewQuestionsMain() {
     }
   };
 
+  const handleLoadPrevPage = () => {
+    console.log('QUESTION', questions)
+    setCurrentPage(prevPage => Math.max(1, prevPage - 1));
+  };
+
+  const handleLoadNextPage = () => {
+    setCurrentPage(prevPage => Math.min(totalPages, prevPage + 1));
+  };
+
   return (
     <>
       <div className="p-6">
@@ -103,20 +116,28 @@ export default function InterviewQuestionsMain() {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          questions.slice(0).reverse().map((question, index) => (
-            <QuestionPostMain
-              key={index}
-              id={question._id.toString()}
-              category={question.category}
-              subCategory={question.sub_category}
-              question={question.question}
-              skills={question.skills}
-              handleDelete={userInfo?.role === "admin" ? handleDelete : null}
-              handleEdit={userInfo?.role === "admin" ? handleEdit : null}
-            />
-          ))
+          <>
+            {questions.map((question, index) => (
+              <QuestionPostMain
+                key={index}
+                id={question._id.toString()}
+                category={question.category}
+                subCategory={question.sub_category}
+                question={question.question}
+                skills={question.skills}
+                handleDelete={userInfo?.role === "admin" ? handleDelete : null}
+                handleEdit={userInfo?.role === "admin" ? handleEdit : null}
+              />
+            ))}
+            <div className="pagination-buttons">
+              <Button disabled={currentPage === 1} onClick={handleLoadPrevPage}>Previous Page</Button>
+              <span>{`Page ${currentPage} of ${totalPages}`}</span>
+              <Button disabled={currentPage === totalPages} onClick={handleLoadNextPage}>Next Page</Button>
+            </div>
+          </>
         )}
       </div>
     </>
   );
 }
+
