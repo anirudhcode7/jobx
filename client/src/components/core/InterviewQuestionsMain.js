@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, useDisclosure } from "@nextui-org/react";
-import { fetchInterviewQuestions, addInterviewQuestion, updateInterviewQuestion, deleteInterviewQuestion } from "../../api/questionApi"; // Import the API functions for questions
+import {
+  fetchInterviewQuestions,
+  addInterviewQuestion,
+  updateInterviewQuestion,
+  deleteInterviewQuestion,
+} from "../../api/questionApi"; // Import the API functions for questions
 import QuestionPostMain from "./QuestionsPostMain"; // Create a similar component for displaying interview questions
 import AddQuestionModal from "./AddQuestionModal"; // Create a similar modal component for adding/editing questions
 import { useAuth } from "../../context/AuthContext"; // Import the AuthContext
@@ -10,7 +15,7 @@ export default function InterviewQuestionsMain() {
   const [loading, setLoading] = useState(true);
   const [questionData, setQuestionData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
   const { userInfo } = useAuth();
@@ -37,6 +42,7 @@ export default function InterviewQuestionsMain() {
       setLoading(true); // Set loading state to true before making a request
       const response = await fetchInterviewQuestions(authToken, currentPage); // Pass authToken and currentPage to fetchInterviewQuestions function
       setQuestions(response.questions);
+      // setQuestions(prevQuestions => [...prevQuestions, ...response.questions]);
       setTotalPages(response.totalPages);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -56,7 +62,11 @@ export default function InterviewQuestionsMain() {
 
   const handleUpdateQuestion = async (updatedQuestionData) => {
     try {
-      await updateInterviewQuestion(authToken, questionData._id.toString(), updatedQuestionData); // Pass authToken to updateQuestion function
+      await updateInterviewQuestion(
+        authToken,
+        questionData._id.toString(),
+        updatedQuestionData
+      ); // Pass authToken to updateQuestion function
       fetchQuestionsFromApi();
     } catch (error) {
       console.error("Error updating question:", error);
@@ -65,7 +75,9 @@ export default function InterviewQuestionsMain() {
 
   const handleEdit = (id) => {
     console.log("Editing question with id:", id);
-    const question = questions.find((question) => question._id.toString() === id);
+    const question = questions.find(
+      (question) => question._id.toString() === id
+    );
     setQuestionData(question);
     onOpen();
   };
@@ -81,18 +93,19 @@ export default function InterviewQuestionsMain() {
   };
 
   const handleLoadPrevPage = () => {
-    console.log('QUESTION', questions)
-    setCurrentPage(prevPage => Math.max(1, prevPage - 1));
+    setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
   };
 
   const handleLoadNextPage = () => {
-    setCurrentPage(prevPage => Math.min(totalPages, prevPage + 1));
+    setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
   };
 
   return (
     <>
       <div className="p-6">
-        <h1 className="text-xl font-bold text-black mb-4">All Interview Questions</h1>
+        <h1 className="text-xl font-bold text-black mb-4">
+          All Interview Questions
+        </h1>
         {userInfo?.role === "admin" && (
           <Button
             onPress={onOpen}
@@ -129,15 +142,34 @@ export default function InterviewQuestionsMain() {
                 handleEdit={userInfo?.role === "admin" ? handleEdit : null}
               />
             ))}
-            <div className="pagination-buttons">
-              <Button disabled={currentPage === 1} onClick={handleLoadPrevPage}>Previous Page</Button>
-              <span>{`Page ${currentPage} of ${totalPages}`}</span>
-              <Button disabled={currentPage === totalPages} onClick={handleLoadNextPage}>Next Page</Button>
-            </div>
+            {totalPages != 0 && (
+              <div className="pagination-buttons flex justify-between">
+                <Button
+                  disabled={currentPage === 1}
+                  onClick={handleLoadPrevPage}
+                  className="text-white bg-indigo-800"
+                  size="lg"
+                  radius="full"
+                  variant="bordered"
+                >
+                  Previous Page
+                </Button>
+                <span>{`Page ${currentPage} of ${totalPages}`}</span>
+                <Button
+                  disabled={currentPage === totalPages}
+                  onClick={handleLoadNextPage}
+                  className="text-white bg-indigo-800"
+                  size="lg"
+                  radius="full"
+                  variant="bordered"
+                >
+                  Next Page
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>
     </>
   );
 }
-
