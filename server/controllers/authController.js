@@ -75,7 +75,7 @@ login = async (req, res) => {
       // Password is correct, generate a JWT token
       const secretKey = process.env.JWT_TOKEN_SECRET_KEY;
       const token = jwt.sign({ id: user._id, role: user.role }, secretKey, {
-        expiresIn: "1h",
+        expiresIn: "12h",
       });
       console.log("Authenticated new user");
       // Send the token in the response

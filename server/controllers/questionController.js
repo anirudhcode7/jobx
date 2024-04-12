@@ -13,16 +13,29 @@ const createQuestion = async (req, res) => {
   }
 };
 
-// Controller function to get all questions
+// Controller function to get all questions with pagination
 const getAllQuestions = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10; // Default limit is 10 questions per page
+
   try {
-    const questions = await Question.find();
-    res.json(questions);
+    const totalQuestions = await Question.countDocuments();
+    const totalPages = Math.ceil(totalQuestions / limit);
+    const offset = (page - 1) * limit;
+
+    const questions = await Question.find().skip(offset).limit(limit);
+
+    res.json({
+      questions,
+      page,
+      totalPages,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve questions. Please try again." });
   }
 };
+
 
 // Controller function to get a single question by ID
 const getQuestionById = async (req, res) => {

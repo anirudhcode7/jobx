@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3004/api/";
 
-export const fetchInterviewQuestions = async (authToken) => {
+export const fetchInterviewQuestions = async (authToken, page = 1, limit = 10) => {
   try {
-    const response = await axios.get(`${API_URL}/questions`, {
+    const response = await axios.get(`${API_URL}/questions?page=${page}&limit=${limit}`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
@@ -15,6 +15,7 @@ export const fetchInterviewQuestions = async (authToken) => {
     throw error;
   }
 };
+
 
 export const addInterviewQuestion = async (authToken, newQuestionData) => {
   try {

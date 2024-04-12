@@ -9,15 +9,15 @@ export default function JobsMain() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [jobData, setJobData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
   const { userInfo } = useAuth();
-  console.log("userInfo: ", userInfo);
 
   useEffect(() => {
     // Fetch jobs from the backend when the component mounts
     fetchJobsFromApi();
-  }, [authToken]);
+  }, [authToken, searchQuery]);
 
   useEffect(() => {
     if (jobData) {
@@ -33,7 +33,7 @@ export default function JobsMain() {
 
   const fetchJobsFromApi = async () => {
     try {
-      const data = await fetchJobs(authToken); // Pass authToken to fetchJobs function
+      const data = await fetchJobs(authToken, searchQuery); // Pass authToken to fetchJobs function
       setJobs(data);
       setLoading(false);
     } catch (error) {
@@ -77,20 +77,58 @@ export default function JobsMain() {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value); // Update search query state
+  };
+
   return (
     <>
       <div className="p-6">
         <h1 className="text-xl font-bold text-black mb-4">All Jobs</h1>
-        {userInfo?.role === "admin" && (
-          <Button
-            onPress={onOpen}
-            className="ml-auto text-white bg-indigo-800"
-            size="lg"
-            radius="full"
-            variant="bordered"
-          >
-            Add Job
-          </Button>
+        <div className="flex items-center justify-between mb-4">
+          {userInfo?.role === "admin" && (
+            <Button
+              onPress={onOpen}
+              className="text-white bg-indigo-800"
+              size="lg"
+              radius="full"
+              variant="bordered"
+            >
+              Add Job
+            </Button>
+          )}
+          <input
+            type="text"
+            placeholder="Search Jobs..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="ml-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
+          />
+        </div>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          jobs
+            .slice(0)
+            .reverse()
+            .map((job, index) => (
+              <JobPostMain
+                key={index}
+                id={job._id.toString()}
+                title={job.title}
+                jobLink={job.job_link}
+                companyLogoUrl={job.company_logo}
+                company={job.company_name}
+                description={job.description}
+                location={job.location}
+                employmentType={job.employment_type}
+                yearsOfExperience={job.experience_required}
+                skills={job.skills_required}
+                handleDelete={userInfo?.role === "admin" ? handleDelete : null}
+                handleEdit={userInfo?.role === "admin" ? handleEdit : null}
+              />
+            ))
         )}
 
         <AddJobModal
@@ -100,28 +138,6 @@ export default function JobsMain() {
           initialJobData={jobData}
           onUpdateJob={handleUpdateJob}
         />
-
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          jobs.slice(0).reverse().map((job, index) => (
-            <JobPostMain
-              key={index}
-              id={job._id.toString()}
-              title={job.title}
-              jobLink={job.job_link}
-              companyLogoUrl={job.company_logo}
-              company={job.company_name}
-              description={job.description}
-              location={job.location}
-              employmentType={job.employment_type}
-              yearsOfExperience={job.experience_required}
-              skills={job.skills_required}
-              handleDelete={userInfo?.role === "admin" ? handleDelete : null}
-              handleEdit={userInfo?.role === "admin" ? handleEdit : null}
-            />
-          ))
-        )}
       </div>
     </>
   );
