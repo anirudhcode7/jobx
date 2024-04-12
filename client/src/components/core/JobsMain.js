@@ -9,15 +9,15 @@ export default function JobsMain() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [jobData, setJobData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
   const { userInfo } = useAuth();
-  console.log("userInfo: ", userInfo);
 
   useEffect(() => {
     // Fetch jobs from the backend when the component mounts
     fetchJobsFromApi();
-  }, [authToken]);
+  }, [authToken, searchQuery]);
 
   useEffect(() => {
     if (jobData) {
@@ -33,7 +33,7 @@ export default function JobsMain() {
 
   const fetchJobsFromApi = async () => {
     try {
-      const data = await fetchJobs(authToken); // Pass authToken to fetchJobs function
+      const data = await fetchJobs(authToken, searchQuery); // Pass authToken to fetchJobs function
       setJobs(data);
       setLoading(false);
     } catch (error) {
@@ -77,6 +77,10 @@ export default function JobsMain() {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value); // Update search query state
+  };
+
   return (
     <>
       <div className="p-6">
@@ -95,7 +99,9 @@ export default function JobsMain() {
           )}
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search Jobs..."
+            value={searchQuery}
+            onChange={handleSearchChange}
             className="ml-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
           />
         </div>

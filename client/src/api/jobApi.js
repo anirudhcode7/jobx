@@ -2,11 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3004/api/";
 
-export const fetchJobs = async (authToken) => {
+export const fetchJobs = async (authToken, searchQuery = "") => {
   try {
     const response = await axios.get(`${API_URL}/jobs`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
+      },
+      params: {
+        search: searchQuery, // Include the search query as a query parameter
       },
     });
     return response.data;

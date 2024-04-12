@@ -31,13 +31,28 @@ const createJob = async (req, res) => {
 // Controller function to get all job postings
 const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find();
-    res.json(jobs);
+    const { search } = req.query;
+    let query = {};
+
+    // If search query is provided, construct a regex pattern for case-insensitive search
+    if (search) {
+      const regex = new RegExp(search, "i");
+      query = {
+        $or: [
+          { title: { $regex: regex } },
+          { description: { $regex: regex } },
+          { company_name: { $regex: regex } },
+        ],
+      };
+    }
+
+    // Fetch jobs from the database based on the search query
+    const jobs = search ? await Job.find(query) : await Job.find();
+
+    res.status(200).json(jobs);
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Failed to retrieve job postings. Please try again." });
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
 
@@ -61,11 +76,7 @@ const getJobById = async (req, res) => {
 const updateJobById = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedJob = await Job.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }
-    );
+    const updatedJob = await Job.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedJob) {
       return res.status(404).json({ message: "Job posting not found." });
     }
