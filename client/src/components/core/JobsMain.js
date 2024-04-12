@@ -9,6 +9,8 @@ export default function JobsMain() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [jobData, setJobData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
@@ -17,7 +19,7 @@ export default function JobsMain() {
   useEffect(() => {
     // Fetch jobs from the backend when the component mounts
     fetchJobsFromApi();
-  }, [authToken, searchQuery]);
+  }, [authToken, searchQuery, currentPage]);
 
   useEffect(() => {
     if (jobData) {
@@ -33,8 +35,9 @@ export default function JobsMain() {
 
   const fetchJobsFromApi = async () => {
     try {
-      const data = await fetchJobs(authToken, searchQuery); // Pass authToken to fetchJobs function
-      setJobs(data);
+      const data = await fetchJobs(authToken, searchQuery, currentPage); // Pass authToken, searchQuery, and currentPage to fetchJobs function
+      setJobs(data.jobs);
+      setTotalPages(data.pageSize);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -81,6 +84,14 @@ export default function JobsMain() {
     setSearchQuery(event.target.value); // Update search query state
   };
 
+  const handleLoadPrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1); // Update currentPage state
+  };
+
+  const handleLoadNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1); // Update currentPage state
+  };
+
   return (
     <>
       <div className="p-6">
@@ -108,27 +119,51 @@ export default function JobsMain() {
 
         {loading ? (
           <p>Loading...</p>
+        ) : jobs.length > 0 ? (
+          jobs.map((job, index) => (
+            <JobPostMain
+              key={index}
+              id={job._id.toString()}
+              title={job.title}
+              jobLink={job.job_link}
+              companyLogoUrl={job.company_logo}
+              company={job.company_name}
+              description={job.description}
+              location={job.location}
+              employmentType={job.employment_type}
+              yearsOfExperience={job.experience_required}
+              skills={job.skills_required}
+              handleDelete={userInfo?.role === "admin" ? handleDelete : null}
+              handleEdit={userInfo?.role === "admin" ? handleEdit : null}
+            />
+          ))
         ) : (
-          jobs
-            .slice(0)
-            .reverse()
-            .map((job, index) => (
-              <JobPostMain
-                key={index}
-                id={job._id.toString()}
-                title={job.title}
-                jobLink={job.job_link}
-                companyLogoUrl={job.company_logo}
-                company={job.company_name}
-                description={job.description}
-                location={job.location}
-                employmentType={job.employment_type}
-                yearsOfExperience={job.experience_required}
-                skills={job.skills_required}
-                handleDelete={userInfo?.role === "admin" ? handleDelete : null}
-                handleEdit={userInfo?.role === "admin" ? handleEdit : null}
-              />
-            ))
+          <p>No jobs found.</p>
+        )}
+        {totalPages != 0 && (
+          <div className="pagination-buttons flex justify-between">
+            <Button
+              disabled={currentPage === 1}
+              onClick={handleLoadPrevPage}
+              className="text-white bg-indigo-800"
+              size="lg"
+              radius="full"
+              variant="bordered"
+            >
+              Previous Page
+            </Button>
+            <span>{`Page ${currentPage} of ${totalPages}`}</span>
+            <Button
+              disabled={currentPage === totalPages}
+              onClick={handleLoadNextPage}
+              className="text-white bg-indigo-800"
+              size="lg"
+              radius="full"
+              variant="bordered"
+            >
+              Next Page
+            </Button>
+          </div>
         )}
 
         <AddJobModal
