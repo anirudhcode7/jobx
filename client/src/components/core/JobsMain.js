@@ -37,7 +37,7 @@ export default function JobsMain() {
     try {
       const data = await fetchJobs(authToken, searchQuery, currentPage); // Pass authToken, searchQuery, and currentPage to fetchJobs function
       setJobs(data.jobs);
-      setTotalPages(data.pageSize);
+      setTotalPages(data.totalPages);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching jobs:", error);
