@@ -2,11 +2,21 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3004/api/";
 
-export const fetchInterviewQuestions = async (authToken, page = 1, limit = 10) => {
+export const fetchInterviewQuestions = async (
+  authToken,
+  page = 1,
+  searchQuery = "",
+  limit = 10
+) => {
   try {
-    const response = await axios.get(`${API_URL}/questions?page=${page}&limit=${limit}`, {
+    const response = await axios.get(`${API_URL}/questions?`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
+      },
+      params: {
+        search: searchQuery,
+        page: page,
+        limit: limit,
       },
     });
     return response.data;
@@ -15,7 +25,6 @@ export const fetchInterviewQuestions = async (authToken, page = 1, limit = 10) =
     throw error;
   }
 };
-
 
 export const addInterviewQuestion = async (authToken, newQuestionData) => {
   try {
@@ -30,7 +39,11 @@ export const addInterviewQuestion = async (authToken, newQuestionData) => {
   }
 };
 
-export const updateInterviewQuestion = async (authToken, id, updatedQuestionData) => {
+export const updateInterviewQuestion = async (
+  authToken,
+  id,
+  updatedQuestionData
+) => {
   try {
     await axios.put(`${API_URL}/questions/${id}`, updatedQuestionData, {
       headers: {

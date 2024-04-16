@@ -16,6 +16,7 @@ export default function InterviewQuestionsMain() {
   const [questionData, setQuestionData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { authToken } = useAuth(); // Get the authToken from the AuthContext
   const { userInfo } = useAuth();
@@ -23,7 +24,7 @@ export default function InterviewQuestionsMain() {
   useEffect(() => {
     // Fetch questions from the backend when the component mounts or when currentPage changes
     fetchQuestionsFromApi();
-  }, [authToken, currentPage]);
+  }, [authToken, searchQuery, currentPage]);
 
   useEffect(() => {
     if (questionData) {
@@ -40,9 +41,15 @@ export default function InterviewQuestionsMain() {
   const fetchQuestionsFromApi = async () => {
     try {
       setLoading(true); // Set loading state to true before making a request
-      const response = await fetchInterviewQuestions(authToken, currentPage); // Pass authToken and currentPage to fetchInterviewQuestions function
+      const response = await fetchInterviewQuestions(
+        authToken,
+        currentPage,
+        searchQuery
+      );
+
       setQuestions(response.questions);
       // setQuestions(prevQuestions => [...prevQuestions, ...response.questions]);
+      console.log("response.questions: ", response.questions);
       setTotalPages(response.totalPages);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -92,6 +99,10 @@ export default function InterviewQuestionsMain() {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const handleLoadPrevPage = () => {
     setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
   };
@@ -106,17 +117,26 @@ export default function InterviewQuestionsMain() {
         <h1 className="text-xl font-bold text-black mb-4">
           All Interview Questions
         </h1>
-        {userInfo?.role === "admin" && (
-          <Button
-            onPress={onOpen}
-            className="ml-auto text-white bg-indigo-800"
-            size="lg"
-            radius="full"
-            variant="bordered"
-          >
-            Add Question
-          </Button>
-        )}
+        <div className="flex items-center justify-between mb-4">
+          {userInfo?.role === "admin" && (
+            <Button
+              onPress={onOpen}
+              className="ml-auto text-white bg-indigo-800"
+              size="lg"
+              radius="full"
+              variant="bordered"
+            >
+              Add Question
+            </Button>
+          )}
+          <input
+            type="text"
+            placeholder="Search Jobs..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="ml-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
+          />
+        </div>
 
         <AddQuestionModal
           isOpen={isOpen}
