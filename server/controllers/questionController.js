@@ -19,8 +19,6 @@ const createQuestion = async (req, res) => {
 const getAllQuestions = async (req, res) => {
   try {
     const { search, page, limit } = req.query;
-    console.log("req.query", req.query);
-    console.log("req.params", req.params);
     let query = {};
     if (search) {
       const regex = new RegExp(search, "i");

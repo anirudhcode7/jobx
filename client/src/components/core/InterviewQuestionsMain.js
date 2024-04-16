@@ -48,8 +48,6 @@ export default function InterviewQuestionsMain() {
       );
 
       setQuestions(response.questions);
-      // setQuestions(prevQuestions => [...prevQuestions, ...response.questions]);
-      console.log("response.questions: ", response.questions);
       setTotalPages(response.totalPages);
     } catch (error) {
       console.error("Error fetching questions:", error);
