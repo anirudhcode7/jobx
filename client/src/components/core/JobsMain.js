@@ -97,6 +97,13 @@ export default function JobsMain() {
       <div className="p-6">
         <h1 className="text-xl font-bold text-black mb-4">All Jobs</h1>
         <div className="flex items-center justify-between mb-4">
+          <input
+            type="text"
+            placeholder="Search Jobs..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="mr-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
+          />
           {userInfo?.role === "admin" && (
             <Button
               onPress={onOpen}
@@ -108,13 +115,6 @@ export default function JobsMain() {
               Add Job
             </Button>
           )}
-          <input
-            type="text"
-            placeholder="Search Jobs..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="ml-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
-          />
         </div>
 
         {loading ? (
