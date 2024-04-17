@@ -119,7 +119,7 @@ export default function InterviewQuestionsMain() {
         <div className="flex items-center justify-between mb-4">
           <input
             type="text"
-            placeholder="Search Jobs..."
+            placeholder="Search Questions..."
             value={searchQuery}
             onChange={handleSearchChange}
             className="ml-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72" // Increase the width of the search bar by adding 'w-72' class
