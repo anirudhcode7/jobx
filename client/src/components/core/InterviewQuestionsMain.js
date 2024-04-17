@@ -98,6 +98,7 @@ export default function InterviewQuestionsMain() {
   };
 
   const handleSearchChange = (event) => {
+    setCurrentPage(1);
     setSearchQuery(event.target.value);
   };
 
