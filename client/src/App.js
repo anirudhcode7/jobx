@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import Demo from './components/auth/ReactLogin';
-import Home from './views/Home';
-import { AuthProvider } from './context/AuthContext';
-import LandingPage from './views/Landing';
-import SignupPage from './views/Signup';
-import AdminPage from './views/Admin';
-import Login from './views/Login';
-import InterviewPage from './views/Interview';
-import ThankYouPage from './views/ThankYouPage';
+import Home from "./views/Home";
+import { AuthProvider } from "./context/AuthContext";
+import LandingPage from "./views/Landing";
+import SignupPage from "./views/Signup";
+import AdminPage from "./views/Admin";
+import Login from "./views/Login";
+import InterviewPage from "./views/Interview";
+import ThankYouPage from "./views/ThankYouPage";
 import { NextUIProvider } from "@nextui-org/react";
-import Jobs from './views/Jobs';
+import Jobs from "./views/Jobs";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/jobs" element={<Jobs/>} />
+            <Route path="/jobs" element={<Jobs />} />
             {/* <Route path="/login" element={<Demo />} /> */}
             <Route path="/home" element={<Home />} />
             <Route path="/interview" element={<InterviewPage />} />
