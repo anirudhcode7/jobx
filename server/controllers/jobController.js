@@ -66,6 +66,8 @@ const getAllJobs = async (req, res) => {
     // Calculate the total number of pages based on the total number of jobs and page size
     const totalPages = Math.ceil(totalJobs / pageSize);
 
+    console.log(jobs);
+
     res.status(200).json({ jobs, pageNumber, pageSize, totalPages });
   } catch (error) {
     console.error("Error fetching jobs:", error);

@@ -14,14 +14,19 @@
     "axios": "^1.5.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "chance": "^1.1.11",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
     "openai": "^4.20.1",
     "punycode": "^2.3.1",
     "random-words": "^2.0.1",
     "react-router-dom": "^6.17.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1"
   }
 }

@@ -12,6 +12,13 @@ const SkillTag = ({ skill }) => {
   );
 };
 
+const handleInterview = (id, skills) => {
+  // from id which is a string fetch the job title
+  // and start the interview
+  console.log("Interview started for job id: ", id);
+  console.log("Skills required for the job: ", skills);
+};
+
 export default function JobPostMain({
   id,
   title,
@@ -143,6 +150,7 @@ export default function JobPostMain({
                 size="lg"
                 radius="full"
                 variant="bordered"
+                onClick={() => handleInterview(id, skills)}
               >
                 Start Interview
               </Button>

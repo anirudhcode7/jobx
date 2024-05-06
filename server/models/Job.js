@@ -27,8 +27,13 @@ const jobSchema = new Schema({
   },
   skills_required: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Skill", // Reference to Skill schema
+      skill: {
+        type: Schema.Types.ObjectId,
+        ref: "Skill", // Reference to Skill schema
+      },
+      name: {
+        type: String, // Name of the skill
+      },
     },
   ],
   experience_required: {

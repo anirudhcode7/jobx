@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const Interview = require("./server/models/Interview"); // Import the updated Interview model
-const Job = require("./server/models/Job"); // Import the Job model
+const Interview = require("./server/models/Interview");
+const Job = require("./server/models/Job");
+const jobs = require("./dev.jobs.json");
 
-// Function to find or generate a job ID
 async function findOrGenerateJobId(interview) {
   try {
     // Implement your logic to find or generate a job ID here
@@ -19,30 +19,30 @@ async function findOrGenerateJobId(interview) {
 async function migrateData() {
   try {
     // Connect to MongoDB
-    await mongoose.connect("mongodb://localhost:27017/your_database", {
+    await mongoose.connect("mongodb://localhost:27017/dev", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("MongoDB connection established successfully");
 
-    // Fetch all existing interviews
-    const interviews = await Interview.find({});
+    // Insert all jobs from dev.jobs.json to the database
+    for (const job of jobs) {
+      // check the data validity
+      schema = Job.schema.obj;
 
-    // Iterate over each interview
-    for (const interview of interviews) {
-      // Iterate over each interview attempt
-      for (const attempt of interview.interviews) {
-        // Check if the attempt already has a job_id
-        if (!attempt.job_id) {
-          // If not, find or generate a job ID and assign it
-          const jobId = await findOrGenerateJobId(interview);
-          attempt.job_id = jobId;
+      // for each field in schema check if it is present in job
+      for (const field in schema) {
+        if (!job[field]) {
+          console.log(`Field ${field} missing in job`);
         }
       }
-
-      // Save the updated interview document
-      await interview.save();
+      await Job.create(job);
     }
+
+    console.log("Jobs added to the database successfully");
+
+    // Fetch all existing interviews
+    const interviews = await Interview.find({});
 
     console.log("Data migration completed successfully");
     mongoose.connection.close();

@@ -18,6 +18,7 @@ export const fetchJobs = async (
         limit: limit,
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching jobs:", error);
