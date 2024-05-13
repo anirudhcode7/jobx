@@ -11,7 +11,7 @@ const fields = signupFields;
 let fieldsState = {};
 fields.forEach((field) => (fieldsState[field.id] = ""));
 
-export default function Signup() {
+export default function RecruiterSignup() {
   const [signUpState, setSignUpState] = useState(fieldsState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -152,9 +152,9 @@ export default function Signup() {
             </a>
           </p>
           <p className="mt-4 text-sm text-gray-600 text-center">
-            Not a candidate?{" "}
-            <a href="/recruiter-signup" className="text-blue-700 font-semibold">
-              Recruiter Sign Up
+            Not a Recruiter?{" "}
+            <a href="/signup" className="text-blue-700 font-semibold">
+              Candidate Sign Up
             </a>
           </p>
         </div>

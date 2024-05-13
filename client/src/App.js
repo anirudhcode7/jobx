@@ -12,6 +12,7 @@ import InterviewPage from "./views/Interview";
 import ThankYouPage from "./views/ThankYouPage";
 import { NextUIProvider } from "@nextui-org/react";
 import Jobs from "./views/Jobs";
+import RecruiterSignupPage from "./RecruiterViews/recruiterSignup";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/recruiter-signup" element={<RecruiterSignupPage />} />
           </Routes>
         </BrowserRouter>
       </NextUIProvider>
